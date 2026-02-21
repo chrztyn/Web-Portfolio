@@ -1,0 +1,3 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #app { height: auto; min-height: 100vh; }
+body { background: #f5f0e8; } 
