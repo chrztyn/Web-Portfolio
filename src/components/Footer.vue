@@ -1,3 +1,7 @@
+<script setup>
+import { Github, Linkedin } from 'lucide-vue-next'
+</script>
+
 <template>
   <footer class="footer">
     <div class="footer-left">
@@ -12,15 +16,16 @@
     </div>
 
     <div class="footer-socials">
-      <div class="icon"></div>
-      <div class="icon"></div>
+      <a href="https://github.com/chrztyn" target="_blank" rel="noopener" aria-label="GitHub">
+        <Github class="icon" />
+      </a>
+      <a href="https://www.linkedin.com/in/christine-mae-yunun-106477377" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <Linkedin class="icon" />
+      </a>
     </div>
   </footer>
 </template>
 
-<script setup>
-// No logic needed yet
-</script>
 
 <style scoped>
 .footer {
@@ -28,7 +33,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 30px 80px;
-  background: #f3f3f3;
+  background: #f5f0e8;
   border-top: 1px solid #111;
   font-size: 14px;
 }
@@ -39,15 +44,18 @@
   color: #111;
 }
 
-.footer-socials {
-  display: flex;
-  gap: 12px;
+.footer-socials a {
+  color: #111;
+  transition: color 0.2s ease;
+}
+
+.footer-socials a:hover {
+  color: #EC4D37;
 }
 
 .icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #111;
+  width: 22px;
+  height: 22px;
 }
+
 </style>

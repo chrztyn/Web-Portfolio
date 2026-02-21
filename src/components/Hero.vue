@@ -65,7 +65,7 @@
   max-width: 100%;   
   display: flex;
   flex-direction: column;
-   padding-left: clamp(2rem, 5vw, 5rem);
+   padding-left: clamp(2rem, 30vw, 5rem);
   gap: 0;
 }
 

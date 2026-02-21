@@ -2,13 +2,10 @@
   <section class="about" id="about" aria-label="About Me">
     <div class="about__inner">
 
-      <!-- Section Label -->
       <p class="about__label">ABOUT ME</p>
 
-      <!-- Main Grid -->
       <div class="about__grid">
 
-        <!-- Left: Text Content -->
         <div class="about__left">
           <h2 class="about__heading">
             Turning Ideas into
@@ -201,7 +198,6 @@ const techStack = [
   overflow: hidden;
 }
 
-/* description overlay */
 .about__doing-card p {
   position: absolute;
   inset: 0;
@@ -226,12 +222,12 @@ const techStack = [
 .about__doing-icon {
   width: 18px;
   height: 18px;
-  min-width: 18px;  /* prevent shrinking */
+  min-width: 18px;  
   min-height: 18px;
-  stroke-width: 1.5;  /* consistent stroke for all icons */
+  stroke-width: 1.5;  
   color: var(--ink);
 }
-/* ===== RIGHT ===== */
+
 .about__right {
   display: flex;
   flex-direction: column;
@@ -240,11 +236,11 @@ const techStack = [
 
 .about__img-main {
   width: 100%;
-  max-width: 320px;   /* limit the width */
-  aspect-ratio: 0.5/0.5; /* square */
+  max-width: 320px;  
+  aspect-ratio: 0.5/0.5; 
   border-radius: 8px;
   overflow: hidden;
-  margin: 0 auto;     /* center it */
+  margin: 0 auto;   
 }
 
 .about__img-placeholder {
@@ -259,7 +255,6 @@ const techStack = [
   letter-spacing: 0.1em;
 }
 
-/* X pattern like wireframe */
 .about__img-placeholder::before,
 .about__img-placeholder::after {
   content: '';
@@ -325,7 +320,6 @@ const techStack = [
 .about__img-small::before { transform: rotate(36deg); }
 .about__img-small::after  { transform: rotate(-36deg); }
 
-/* Tech icons row */
 .about__tech-row {
   display: flex;
   flex-wrap: wrap;
@@ -354,7 +348,6 @@ const techStack = [
   object-fit: contain;
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .about__grid {
     grid-template-columns: 1fr;

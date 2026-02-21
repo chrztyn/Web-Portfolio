@@ -6,10 +6,8 @@
 
       <div class="resume__grid">
 
-        <!-- Left: Content -->
         <div class="resume__left">
 
-          <!-- Education -->
           <div class="resume__section">
             <div class="resume__section-header">
               <span class="resume__line"></span>
@@ -48,7 +46,6 @@
 
         </div>
 
-        <!-- Right: Resume Image + Download -->
         <div class="resume__right">
           <div class="resume__preview">
             <div class="resume__img-placeholder">
@@ -56,7 +53,6 @@
             </div>
           </div>
 
-          <!-- Download button linked to your PDF -->
           <a 
             href="/resume.pdf"             
             class="resume__download" 

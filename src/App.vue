@@ -38,8 +38,16 @@ section#resume {
   padding: 0;
   min-height: auto;
     margin-top: 4rem; 
-
 }
+
+section#contact {
+  padding: 0;
+  min-height: auto;
+    margin-top: 8rem; 
+    margin-bottom: 8rem; 
+}
+
+
 </style>
 
 <template>

@@ -18,7 +18,6 @@
       </div>
       <hr class="portfolio__divider" />
 
-      <!-- PROJECTS -->
       <div v-if="activeTab === 'projects'" class="portfolio__projects">
         <div class="stack-container">
           <div
@@ -40,7 +39,6 @@
         </div>
       </div>
 
-      <!-- CERTIFICATIONS -->
       <div v-if="activeTab === 'certifications'" class="portfolio__certs">
         <p class="certs__category-label">TECHNICAL &amp; DEVELOPMENT</p>
         <div class="certs__grid">
@@ -163,7 +161,6 @@ const designCerts = [
   margin: 0 0 3rem;
 }
 
-/* ===== STACKED CARDS ===== */
 .portfolio__projects {
   display: flex;
   align-items: center;
