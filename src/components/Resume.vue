@@ -28,7 +28,6 @@
             </div>
           </div>
 
-          <!-- Experience -->
           <div class="resume__section">
             <div class="resume__section-header">
               <span class="resume__line"></span>
@@ -47,11 +46,9 @@
         </div>
 
         <div class="resume__right">
-          <div class="resume__preview">
-            <div class="resume__img-placeholder">
-              <span>Resume Preview</span>
-            </div>
-          </div>
+        <div class="resume__preview">
+            <img src="../assets/images/resume.png" alt="Resume Preview" class="resume__img" />
+        </div>
 
           <a 
             href="/resume.pdf"             
@@ -232,39 +229,34 @@ const experiences = [
   top: 100px;
 }
 
+.resume__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .resume__preview {
   width: 100%;
   aspect-ratio: 3/4;
   border-radius: 8px;
   overflow: hidden;
-  background: #d9d9d9;
   position: relative;
 }
 
-.resume__img-placeholder {
+.resume__img {
   width: 100%;
   height: 100%;
-  display: grid;
-  place-items: center;
-  color: #aaa;
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
-  position: relative;
+  object-fit: cover;
+  filter: blur(2px);  
+  transition: filter 0.3s ease, box-shadow 0.3s ease;
 }
 
-.resume__img-placeholder::before,
-.resume__img-placeholder::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  background: #bbb;
-  top: 50%;
+/* .resume__preview:hover .resume__img {
+  filter: blur(2px);  
+} */
+
+.resume__preview:hover {
+  box-shadow: 0 0 25px 10px rgba(236, 77, 55, 0.35);
 }
-
-.resume__img-placeholder::before { transform: rotate(35deg); }
-.resume__img-placeholder::after  { transform: rotate(-35deg); }
-
 .resume__download {
   display: inline-block;
   background: #c0b8ad;
