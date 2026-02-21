@@ -34,14 +34,11 @@
           </div>
         </div>
 
-        <!-- Right: Images -->
         <div class="about__right">
-          <!-- Main image placeholder -->
             <div class="about__img-main">
             <img src="../assets/images/christine.jpg" alt="Christine Mae Yunun" class="about__photo" />
             </div>
 
-          <!-- What I'm Doing -->
           <div class="about__sub-section">
             <p class="about__sub-label">WHAT I'M DOING</p>
 <div class="about__img-row">
@@ -54,8 +51,6 @@
   </div>
 </div>
           </div>
-
-          <!-- What I'm Using -->
           <div class="about__sub-section">
             <p class="about__sub-label">WHAT I'M USING</p>
             <div class="about__tech-row">
@@ -136,12 +131,11 @@ const techStack = [
 
 .about__grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;  /* give more space to text */
+  grid-template-columns: 1.2fr 0.8fr; 
   gap: 4rem;
   align-items: start;
 }
 
-/* ===== LEFT ===== */
 .about__heading {
   font-family: var(--font-display);
    font-size: clamp(2.2rem, 3.5vw, 3.2rem);
@@ -241,36 +235,6 @@ const techStack = [
   border-radius: 8px;
   overflow: hidden;
   margin: 0 auto;   
-}
-
-.about__img-placeholder {
-  width: 100%;
-  height: 100%;
-  background: #ddd;
-  display: grid;
-  place-items: center;
-  position: relative;
-  color: #aaa;
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
-}
-
-.about__img-placeholder::before,
-.about__img-placeholder::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  background: #bbb;
-  top: 50%;
-}
-
-.about__img-placeholder::before {
-  transform: rotate(calc(atan2(3, 4) * 1rad));
-}
-
-.about__img-placeholder::after {
-  transform: rotate(calc(-1 * atan2(3, 4) * 1rad));
 }
 
 .about__sub-section {
