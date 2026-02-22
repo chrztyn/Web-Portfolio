@@ -4,7 +4,7 @@
     <nav class="nav" aria-label="Primary Navigation">
       <a href="#home" class="nav-brand">
         <span class="nav-logo-wrap">
-          <img src="../assets/images/logo.png" alt="Christine Mae Yunun Logo" class="nav-logo">
+          <img :src="currentLogo" alt="Christine Mae Yunun Logo" class="nav-logo">
         </span>
         <span class="nav-name">Christine Mae Yunun</span>
       </a>
@@ -50,9 +50,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { CodeXml, Folder, File, Mail, User, Sun, Moon } from 'lucide-vue-next'
+import LogoLight from '../assets/images/logo.png'
+import LogoDark from '../assets/images/logo-dark.png'
 
+const currentLogo = computed(() => isDark.value ? LogoDark : LogoLight)
 const isScrolled = ref(false)
 const menuOpen = ref(false)
 const isDark = ref(false)

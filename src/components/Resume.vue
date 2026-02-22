@@ -253,6 +253,7 @@ const experiences = [
 
 .resume__entry:hover .resume__date { 
   background: var(--ink); 
+  color: var(--bg-alt);
 }
 
 .resume__degree {

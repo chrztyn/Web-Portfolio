@@ -56,7 +56,6 @@ useHead({
 </script>
 
 <style>
-/* ===== CSS VARIABLES ===== */
 :root {
   --bg: #f5f0e8;
   --bg-alt: #ede8df;
@@ -79,7 +78,6 @@ html.dark {
   --glass-bg: rgba(20, 20, 20, 0.55);
 }
 
-/* ===== GLOBAL RESET ===== */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -97,7 +95,6 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* ===== SECTIONS ===== */
 section#home {
   padding: 5rem clamp(2rem, 6vw, 8rem);
   min-height: 100vh;

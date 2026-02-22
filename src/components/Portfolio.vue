@@ -33,7 +33,7 @@
               </div>
             </div>
             <div class="card__body">
-              <p class="card__tech">{{ project.tech }}</p>  <!-- add this here -->
+              <p class="card__tech">{{ project.tech }}</p>  
               <h3 class="card__title">{{ project.title }}</h3>
               <p class="card__desc">{{ project.description }}</p>
               <a :href="project.link" class="card__btn" target="_blank" rel="noopener">
@@ -96,44 +96,44 @@ const projects = [
   {
     title: 'SplitSmart',
     tech: 'Node.js · Express.js · MongoDB',
-    description: 'A web app that automates group expense tracking with RESTful APIs, database architecture, authentication, and CRUD operations.',
+    description: 'I developed a web application that automates group expense tracking, designing RESTful APIs and a robust database architecture to ensure efficient data handling. The project included implementing secure authentication and full CRUD operations, enabling smooth user interaction and management. Working within an agile workflow, I collaborated closely with a team to iteratively refine features, maintain clear communication, and deliver a reliable solution.',
     image: SplitSmart,
     link: '#'
   },
   {
     title: 'Non Ta Mangan',
     tech: 'PHP · MySQL · JavaScript',
-    description: 'A restaurant picker and rating web app with a spin-the-wheel feature, rating system, and user account management.',
+    description: 'I developed a “spin-the-wheel” feature for restaurant selection, enhancing user engagement by adding an interactive decision-making tool. The application also integrated a rating system and comprehensive user account management to personalize experiences and ensure secure access. Working collaboratively within a team, I contributed to delivering a fully functional web application by following agile practices and iteratively refining features to meet user needs.',
     image: NonTaMangan,
     link: '#'
   },
   {
     title: 'Pelikula',
     tech: 'HTML · CSS · JavaScript',
-    description: 'A static web prototype for browsing, rating, and reviewing movies with a focus on UI consistency and responsive layout.',
+    description: 'I designed a static web prototype for browsing, rating, and reviewing movies, with a strong emphasis on UI consistency and responsive layout. The project focused on creating a clean, intuitive interface that adapts seamlessly across devices, ensuring a smooth user experience while maintaining visual coherence.',
     image: Pelikula,
     link: '#'
   },
   {
     title: 'BuffsChicken',
     tech: 'Vue · Nuxt · Express.js',
-    description: 'An SEO-focused e-commerce website for a chicken brand, built with Nuxt for server-side rendering and Express.js for the backend API.',
+    description: 'I developed an SEO focused e-commerce website for a chicken brand, where I designed the system architecture to ensure scalability, efficiency, and smooth integration of features. The backend was powered by Express.js, providing a robust API for secure data handling and streamlined product management. To boost search visibility and performance,server-side rendering with Nuxt was implemented.',
     image: BuffsChicken,
     link: '#'
   },
 ]
 
 const techCerts = [
-  { title: 'Back-End Development and APIs', issuer: 'FreeCodeCamp', date: 'Oct 2025', link: '#' },
-  { title: 'Legacy JavaScript Algorithms and Data Structures', issuer: 'FreeCodeCamp', date: 'Sep 2025', link: '#' },
-  { title: 'JavaScript Essentials', issuer: 'Cisco', date: 'Oct 2024', link: '#' },
-  { title: 'CompTIA IT Fundamentals+ (ITF+)', issuer: 'CompTIA', date: 'Nov 2023', link: '#' },
+  { title: 'Back-End Development and APIs', issuer: 'FreeCodeCamp', date: 'Oct 2025', link: 'https://drive.google.com/file/d/15wPQCdqs3RsGfXA4OPokfTBLY1oWzeEx/view' },
+  { title: 'Legacy JavaScript Algorithms and Data Structures', issuer: 'FreeCodeCamp', date: 'Sep 2025', link: 'https://drive.google.com/file/d/1bwpne5Gk3jfvX6dk-6YxRZXVC4HUuACn/view' },
+  { title: 'JavaScript Essentials', issuer: 'Cisco', date: 'Oct 2024', link: 'https://www.credly.com/badges/7721bc03-5d6b-4fe9-bbaf-29adc9ec8c39/public_url' },
+  { title: 'CompTIA IT Fundamentals+ (ITF+)', issuer: 'CompTIA', date: 'Nov 2023', link: 'https://drive.google.com/file/d/1hjG3ss4832kyTWZx_V365_mP-ndKwfe7/view' },
 ]
 
 const designCerts = [
-  { title: 'Design Thinking for Beginners', issuer: 'Simplilearn', date: 'Jul 2025', link: '#' },
-  { title: 'Introduction to Graphic Design & Basics of UI/UX', issuer: 'Simplilearn', date: 'Aug 2025', link: '#' },
-  { title: 'Legacy Responsive Design', issuer: 'FreeCodeCamp', date: 'Sept 2024', link: '#' },
+  { title: 'Design Thinking for Beginners', issuer: 'Simplilearn', date: 'Jul 2025', link: 'https://drive.google.com/file/d/1HVL7HlnaBg6HvyOeWNJWL2evEIiDN1P-/view' },
+  { title: 'Introduction to Graphic Design & Basics of UI/UX', issuer: 'Simplilearn', date: 'Aug 2025', link: 'https://drive.google.com/file/d/1UM49Lpav0jepMQ2xGJjtMF3xKLyovx_A/view' },
+  { title: 'Legacy Responsive Design', issuer: 'FreeCodeCamp', date: 'Sept 2024', link: 'https://drive.google.com/file/d/1zzUSYnzWwdoUiIhWrqc6xW8EZP5izH9T/view' },
 ]
 </script>
 
@@ -304,12 +304,16 @@ const designCerts = [
 }
 
 .card__desc {
-  font-size: 0.73rem;
+  font-size: 0.60rem;
   line-height: 1.55;
   color: var(--ink);
   opacity: 0.65;
   margin: 0;
   flex: 1;
+    display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .card__btn {
