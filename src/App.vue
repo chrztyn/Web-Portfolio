@@ -10,8 +10,8 @@ body {
   color: #111;
 }
 
-section {
-  padding:90px 80px;
+section#home {
+  padding: 5rem 0 5rem;
   min-height: 100vh;
 }
 
