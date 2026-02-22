@@ -17,16 +17,23 @@
         <li><a href="#contact"><Mail class="nav-icon" /><span>Contact</span></a></li>
       </ul>
 
-      <button
-        class="nav-hamburger"
-        @click="menuOpen = !menuOpen"
-        :aria-expanded="menuOpen"
-        aria-label="Toggle navigation"
-      >
-        <span class="bar" :class="{ open: menuOpen }"></span>
-        <span class="bar" :class="{ open: menuOpen }"></span>
-        <span class="bar" :class="{ open: menuOpen }"></span>
-      </button>
+      <div class="nav-right">
+        <button class="nav-theme" @click="toggleTheme" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'">
+          <Sun v-if="isDark" class="nav-icon" />
+          <Moon v-else class="nav-icon" />
+        </button>
+
+        <button
+          class="nav-hamburger"
+          @click="menuOpen = !menuOpen"
+          :aria-expanded="menuOpen"
+          aria-label="Toggle navigation"
+        >
+          <span class="bar" :class="{ open: menuOpen }"></span>
+          <span class="bar" :class="{ open: menuOpen }"></span>
+          <span class="bar" :class="{ open: menuOpen }"></span>
+        </button>
+      </div>
     </nav>
 
     <div class="nav-mobile" :class="{ open: menuOpen }">
@@ -44,32 +51,45 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { CodeXml, Folder, File, Mail, User } from 'lucide-vue-next'
+import { CodeXml, Folder, File, Mail, User, Sun, Moon } from 'lucide-vue-next'
 
 const isScrolled = ref(false)
 const menuOpen = ref(false)
+const isDark = ref(false)
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 80
   if (menuOpen.value) menuOpen.value = false
 }
 
-onMounted(() => window.addEventListener('scroll', handleScroll, { passive: true }))
+const toggleTheme = () => {
+  isDark.value = !isDark.value
+  document.documentElement.classList.toggle('dark', isDark.value)
+  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  const saved = localStorage.getItem('theme')
+  if (saved === 'dark') {
+    isDark.value = true
+    document.documentElement.classList.add('dark')
+  }
+})
+
 onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 </script>
 
 <style scoped>
 *, *::before, *::after { box-sizing: border-box; }
 
-
 .site-header {
   position: sticky;
   top: 0;
   z-index: 1000;
   width: 100%;
-  background: #f5f0e8;
+  background: var(--bg);
 }
-
 
 .nav {
   display: flex;
@@ -77,18 +97,17 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   justify-content: space-between;
   width: 100%;
   padding: 1rem 2rem;
-  border-bottom: 2px solid #1D1B1B;
-  background: #f5f0e8;
+  border-bottom: 2px solid var(--ink);
+  background: var(--bg);
   min-width: 0;
 }
-
 
 .nav-brand {
   display: flex;
   align-items: center;
   gap: 0.6rem;
   text-decoration: none;
-  color: #1D1B1B;
+  color: var(--ink);
   font-weight: 700;
   flex-shrink: 0;
   white-space: nowrap;
@@ -112,7 +131,6 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   white-space: nowrap;
 }
 
-
 .nav-links {
   display: flex;
   align-items: center;
@@ -129,15 +147,38 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   align-items: center;
   gap: 0.4rem;
   text-decoration: none;
-  color: #1D1B1B;
+  color: var(--ink);
   font-size: 0.95rem;
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
-.nav-links a:hover span { color: #EC4D37; }
+.nav-links a:hover span { color: var(--red); }
 .nav-icon { width: 20px; height: 20px; }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.nav-theme {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  transition: background 0.2s ease, color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-theme:hover {
+  background: var(--border);
+}
 
 .nav-hamburger {
   display: none;
@@ -156,7 +197,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   display: block;
   width: 24px;
   height: 2px;
-  background: #1D1B1B;
+  background: var(--ink);
   border-radius: 2px;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
@@ -165,12 +206,11 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 .bar:nth-child(2).open { opacity: 0; }
 .bar:nth-child(3).open { transform: translateY(-7px) rotate(-45deg); }
 
-
 .nav-mobile {
   display: none;
   width: 100%;
-  background: #f5f0e8;
-  border-bottom: 2px solid #1D1B1B;
+  background: var(--bg);
+  border-bottom: 2px solid var(--border);
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.35s ease;
@@ -192,17 +232,16 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   gap: 0.8rem;
   padding: 1rem 1.5rem;
   text-decoration: none;
-  color: #1D1B1B;
+  color: var(--ink);
   font-weight: 600;
   font-size: 1rem;
-  border-bottom: 1px solid #d0c9bc;
+  border-bottom: 1px solid var(--border);
   transition: color 0.2s ease, background 0.2s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
 .nav-mobile ul li:last-child a { border-bottom: none; }
-.nav-mobile a:active { color: #EC4D37; background: #ede8df; }
-
+.nav-mobile a:active { color: var(--red); background: var(--bg-alt); }
 
 @media (min-width: 769px) {
   .site-header.scrolled {
@@ -213,16 +252,18 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   .site-header.scrolled .nav {
     transform: translateZ(0);
     will-change: transform;
-
     width: fit-content;
     margin: 1rem auto 0;
     padding: 0.6rem 1.8rem;
-    border: none;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1.5px solid var(--border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.04);
     justify-content: center;
     gap: 1.5rem;
     flex: unset;
@@ -234,7 +275,6 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   .site-header.scrolled .nav-links span { display: none; }
 }
 
-
 @media (max-width: 1024px) and (min-width: 769px) {
   .nav { padding: 1rem 1.5rem; }
   .nav-links { gap: 1.2rem; }
@@ -243,7 +283,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
 @media (max-width: 768px) {
   .site-header {
-    background: #f5f0e8 !important;
+    background: var(--bg) !important;
     padding: 0 !important;
     transition: none !important;
   }
@@ -251,8 +291,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   .nav {
     width: 100%;
     padding: 0.85rem 1rem;
-    border-bottom: 2px solid #1D1B1B;
-    background: #f5f0e8;
+    border-bottom: 2px solid var(--border);
+    background: var(--bg);
     justify-content: space-between;
   }
 
@@ -263,8 +303,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     justify-content: space-between !important;
     width: 100% !important;
     padding: 0.85rem 1rem !important;
-    border-bottom: 2px solid #1D1B1B !important;
-    background: #f5f0e8 !important;
+    border-bottom: 2px solid var(--border) !important;
+    background: var(--bg) !important;
     box-sizing: border-box !important;
     margin: 0 !important;
     border-radius: 0 !important;
@@ -276,7 +316,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
   .site-header.scrolled .nav-name {
     display: block !important;
-    color: #1D1B1B !important;
+    color: var(--ink) !important;
     font-weight: 700 !important;
     font-size: 1rem !important;
     white-space: nowrap !important;
@@ -284,6 +324,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
   .site-header.scrolled .nav-links { display: none !important; }
   .site-header.scrolled .nav-hamburger { display: flex !important; }
+  .site-header.scrolled .nav-right { display: flex !important; }
 
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }

@@ -1,55 +1,3 @@
-<style>
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  font-family: 'Satoshi-Variable', sans-serif;
-  background: #f5f0e8;
-  color: #111;
-}
-
-section#home {
-  padding: 5rem 0 5rem;
-  min-height: 100vh;
-}
-
-section#about {
-  padding: 0;
-  min-height: auto;
-}
-
-section#skills {
-  padding: 5rem 0 5rem;
-  min-height: auto;
-    margin-top: 4rem;  
-
-}
-
-section#portfolio {
-  padding: 0;
-  min-height: auto;
-    margin-top: 4rem; 
-
-}
-
-section#resume {
-  padding: 5rem 0 5rem;
-  min-height: auto;
-    margin-top: 4rem; 
-}
-
-section#contact {
-  padding: 0;
-  min-height: auto;
-    margin-top: 8rem; 
-    margin-bottom: 8rem; 
-}
-
-
-</style>
-
 <template>
   <Navbar />
 
@@ -69,7 +17,7 @@ section#contact {
     <Portfolio />
   </section>
 
-    <section id="resume">
+  <section id="resume">
     <Resume/>
   </section>
 
@@ -91,7 +39,6 @@ import Contact from './components/Contact.vue'
 import Footer from './components/Footer.vue'
 import { useHead } from '@unhead/vue'
 
-
 useHead({
   title: 'Christine Mae Yunun | Back End Developer',
   meta: [
@@ -108,3 +55,81 @@ useHead({
 })
 </script>
 
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --bg: #f5f0e8;
+  --bg-alt: #ede8df;
+  --ink: #1a1a1a;
+  --red: #EC4D37;
+  --border: #d0c9bc;
+  --card: #e8e2d8;
+  --card-dark: #d4cec5;
+  --glass-bg: rgba(245, 240, 232, 0.45);
+}
+
+html.dark {
+  --bg: #141414;
+  --bg-alt: #1e1e1e;
+  --ink: #f0ebe3;
+  --red: #EC4D37;
+  --border: #2e2e2e;
+  --card: #1e1e1e;
+  --card-dark: #252525;
+  --glass-bg: rgba(20, 20, 20, 0.55);
+}
+
+/* ===== GLOBAL RESET ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Satoshi-Variable', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ===== SECTIONS ===== */
+section#home {
+  padding: 5rem clamp(2rem, 6vw, 8rem);
+  min-height: 100vh;
+}
+
+section#about {
+  padding: 0;
+  min-height: auto;
+}
+
+section#skills {
+  padding: 3rem 0 5rem;
+  min-height: auto;
+  margin-top: 2.2rem;
+}
+
+section#portfolio {
+  padding: 0;
+  min-height: auto;
+  margin-top: 0.5rem;
+  margin-bottom: 4rem;
+}
+
+section#resume {
+  padding: 2rem 0 5rem;
+  min-height: auto;
+}
+
+section#contact {
+  padding: 0;
+  min-height: auto;
+  margin-top: 2rem;
+  margin-bottom: 7rem;
+}
+</style>

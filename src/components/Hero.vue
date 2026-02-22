@@ -30,7 +30,7 @@
 
         <div class="hero__bio">
           <p>
-            Highly passionate backend-focused web developer with experience in system architecture, 
+            Highly passionate backend web developer with experience in system architecture, 
             database management, and RESTful API development. Skilled in building efficient, scalable, 
             and maintainable applications. Eager to solve problems and apply technical expertise 
             to real world projects.
@@ -70,64 +70,58 @@
 </template>
 
 <script setup>
+import SplitSmart from '../assets/images/splitsmart.png'
+import NonTaMangan from '../assets/images/nontamangan.png'
+import Pelikula from '../assets/images/pelikula.png'
+
 const featuredProjects = [
   {
     title: 'SplitSmart',
     tech: 'Node.js · Express.js · MongoDB',
     desc: 'A web app that automates group expense tracking with RESTful APIs and authentication.',
-    image: 'https://placehold.co/400x240/d9d9d9/888?text=SplitSmart',
+    image: SplitSmart,
     link: '#portfolio'
   },
   {
     title: 'Non Ta Mangan',
     tech: 'PHP · MySQL · JavaScript',
     desc: 'A restaurant picker and rating web app with spin-the-wheel and user account management.',
-    image: 'https://placehold.co/400x240/d9d9d9/888?text=Non+Ta+Mangan',
+    image: NonTaMangan,
     link: '#portfolio'
   },
   {
     title: 'Pelikula',
     tech: 'HTML · CSS · JavaScript',
     desc: 'A movie review and rating web prototype with responsive layout and UI consistency.',
-    image: 'https://placehold.co/400x240/d9d9d9/888?text=Pelikula',
+    image: Pelikula,
     link: '#portfolio'
   },
 ]
 </script>
 
-<style scoped>
+<style>
 .hero {
-  --cream: #f5f0e8;
-  --red:   #EC4D37;
-  --ink:   #1a1a1a;
-  --font-display: 'Satoshi-Regular', sans-serif;
-  --font-body: 'Satoshi-Variable', sans-serif;
-
-  font-family: var(--font-body);
+  font-family: 'Satoshi-Variable', sans-serif;
   min-height: auto;
   display: flex;
-  align-items: flex-start;       
-  justify-content: flex-start;   
-  padding: 2vh clamp(1rem, 8vw, 6rem);
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2vh clamp(2rem, 8vw, 10rem);
   padding-top: 0.5rem;
   position: relative;
   overflow: hidden;
   overflow-x: hidden;
-}
+  background: var(--bg);
+  transition: background 0.3s ease;
+    background: var(--bg);
+      min-height: 100vh;
 
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  opacity: 0.4;
-  z-index: 0;
+
 }
 
 .hero__inner {
   width: 100%;
-  max-width: 100%;
+  max-width: 1400px;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -138,13 +132,13 @@ const featuredProjects = [
 
 .hero__row-top {
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   align-items: flex-end;
   gap: 1.5rem;
 }
 
 .hero__hello {
-  font-family: var(--font-display);
+  font-family: 'Satoshi-Regular', sans-serif;
   font-weight: 900;
   color: var(--red);
   font-size: clamp(5rem, 11vw, 13rem);
@@ -164,23 +158,23 @@ const featuredProjects = [
 }
 
 .hero__badge span {
-  display: inline-flex;     
+  display: inline-flex;
   align-items: center;
   background: var(--ink);
-  color: #fff;
+  color: var(--bg);
   width: max-content;
   white-space: nowrap;
   font-family: 'Satoshi-Regular';
   font-weight: 700;
   text-transform: lowercase;
   letter-spacing: -0.01em;
-    font-size: clamp(0.7rem, 2.5vw, 2.4rem);
+  font-size: clamp(0.7rem, 2.5vw, 2.4rem);
   padding: 0.4em 0.8em;
-  line-height: 1;        
-  border-radius: 9999px;     
+  line-height: 1;
+  border-radius: 9999px;
   margin: 0;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
-              box-shadow 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
 }
 
 .hero__badge span:first-child {
@@ -210,11 +204,11 @@ const featuredProjects = [
   display: flex;
   align-items: center;
   gap: clamp(0.3rem, 2vw, 1.5rem);
-  margin-top: 0rem;
+  margin-top: 0;
 }
 
 .hero__im {
-  font-family: var(--font-display);
+  font-family: 'Satoshi-Regular', sans-serif;
   font-weight: 900;
   color: var(--red);
   font-size: clamp(4rem, 9.5vw, 11rem);
@@ -235,7 +229,7 @@ const featuredProjects = [
 }
 
 .hero__name {
-  font-family: var(--font-display);
+  font-family: 'Satoshi-Regular', sans-serif;
   font-weight: 900;
   color: var(--red);
   font-size: clamp(4rem, 9.5vw, 11rem);
@@ -245,7 +239,6 @@ const featuredProjects = [
   opacity: 0;
   animation: fadeUp 0.7s ease 0.7s forwards;
 }
-
 
 @keyframes spin {
   to { transform: rotate(360deg); }
@@ -292,9 +285,7 @@ const featuredProjects = [
   transition: width 0.3s ease;
 }
 
-.hero__link:hover::after {
-  width: 100%;
-}
+.hero__link:hover::after { width: 100%; }
 
 .hero__arrow {
   font-size: 1.3em;
@@ -307,11 +298,12 @@ const featuredProjects = [
   line-height: 1.7;
   color: var(--ink);
   flex: 1;
+  transition: color 0.3s ease;
 }
 
-.hero__bio p { 
+.hero__bio p {
   margin: 0;
-  text-align: justify; 
+  text-align: justify;
 }
 
 .hero__scroll {
@@ -334,7 +326,7 @@ const featuredProjects = [
 .hero__scroll-line {
   width: 40px;
   height: 1px;
-  background: #c0b8ad;
+  background: var(--border);
   position: relative;
   overflow: hidden;
 }
@@ -379,12 +371,13 @@ const featuredProjects = [
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 1.5px solid #d0c9bc;
+  border: 1.5px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
   text-decoration: none;
   color: var(--ink);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  background: var(--card);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background 0.3s ease;
 }
 
 .hero__project-card:hover {
@@ -416,6 +409,8 @@ const featuredProjects = [
   flex-direction: column;
   gap: 0.3rem;
   flex: 1;
+  background: var(--card);
+  transition: background 0.3s ease;
 }
 
 .hero__project-tech {
@@ -450,8 +445,8 @@ const featuredProjects = [
   transition: opacity 0.2s ease;
 }
 
-.hero__project-card:hover .hero__project-arrow {
-  opacity: 1;
+.hero__project-card:hover .hero__project-arrow { 
+  opacity: 1; 
 }
 
 @keyframes fadeUp {
@@ -459,135 +454,6 @@ const featuredProjects = [
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 768px) {
-    .hero {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .hero__row-top {
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .hero__badge span:last-child {
-    margin-left: 0.8em;
-  }
-  .hero__inner {
-    padding-left: 1.5rem;
-  }
-
-  .hero__row-top {
-    gap: 1.5rem;
-    align-items: center;
-  }
-
-  .hero__row-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.5rem;
-  }
-
-  .hero__bio {
-    max-width: 100%;
-    text-align: left;
-  }
-
-  .hero__bio p {
-    text-align: left;
-  }
-
-  .hero__projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  .hero {
-    padding: 1rem;
-    padding-top: 0.5rem;
-    overflow-x: hidden;
-  }
-
-  .hero__inner {
-    padding-left: 0;
-  }
-
-  .hero__row-top {
-    flex-direction: row;
-    align-items: flex-end;
-    gap: 0.8rem;
-    flex-wrap: nowrap;
-  }
-
-  .hero__hello {
-    font-size: clamp(2.8rem, 16vw, 4.5rem);
-    flex-shrink: 0;
-  }
-
-  .hero__badge span {
-    font-size: clamp(0.7rem, 3.5vw, 1rem);
-    padding: 0.4em 0.8em;
-  }
-
-  .hero__badge span:last-child {
-    margin-left: 2em;  
-  }
-
-  .hero__im,
-  .hero__name {
-    font-size: clamp(2.5rem, 14vw, 4rem);
-  }
-
-  .hero__asterisk {
-    font-size: clamp(1.5rem, 7vw, 2.5rem);
-  }
-
-  .hero__row-mid {
-    gap: 0.3rem;
-    flex-wrap: nowrap;
-  }
-
-  .hero__row-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.2rem;
-    margin-top: 1.5rem;
-  }
-
-  .hero__bio p {
-    text-align: left;
-    font-size: 0.88rem;
-  }
-
-  .hero__projects-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero__cta {
-    flex-direction: column;  
-    gap: 0.8rem;
-  }
-}
-
-@media (min-width: 1400px) {
-  .hero__inner {
-    padding-left: clamp(5rem, 8vw, 10rem);
-  }
-
-  .hero__projects-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-
-  .hero__bio {
-    max-width: 680px;
-    font-size: 1rem;
-  }
-}
-</style>
-
-<style>
 @keyframes stackFirst {
   from { opacity: 0; transform: rotate(-6deg) translateY(-50px); }
   to   { opacity: 1; transform: rotate(-6deg) translateY(0); }
@@ -596,5 +462,103 @@ const featuredProjects = [
 @keyframes stackSecond {
   from { opacity: 0; transform: translateY(-50px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .hero { 
+    padding-left: 1.5rem; 
+    padding-right: 1.5rem; 
+  }
+  
+  .hero__row-top { 
+    gap: 1.5rem; 
+    align-items: center; 
+    flex-wrap: wrap; 
+  }
+
+  .hero__badge span:last-child { 
+    margin-left: 0.8em; 
+  }
+
+  .hero__row-bottom { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 1.5rem; 
+  }
+
+  .hero__bio { 
+    max-width: 100%; 
+  }
+
+  .hero__bio p { 
+    text-align: left; 
+  }
+
+  .hero__projects-grid { 
+    grid-template-columns: repeat(2, 1fr); 
+  }
+}
+
+@media (max-width: 480px) {
+  .hero { 
+    padding: 1rem; 
+    padding-top: 0.5rem; 
+    overflow-x: hidden; 
+  }
+
+  .hero__hello { 
+    font-size: 3rem; 
+    flex-shrink: 0; 
+  }
+
+  .hero__im, .hero__name { 
+    font-size: 2.8rem; 
+  }
+
+  .hero__asterisk { 
+    font-size: 1.6rem; 
+  }
+
+  .hero__badge span { 
+    font-size: 0.7rem; 
+    padding: 0.4em 0.8em; 
+  }
+
+  .hero__badge span:last-child { 
+    margin-left: 1em; 
+  }
+
+  .hero__row-top { 
+    flex-direction: row; 
+    align-items: flex-end; 
+    gap: 0.8rem; 
+    flex-wrap: nowrap; 
+  }
+
+  .hero__row-mid { 
+    gap: 0.3rem; 
+    flex-wrap: nowrap; 
+  }
+
+  .hero__row-bottom { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 1.2rem; 
+    margin-top: 1.5rem; 
+  }
+
+  .hero__bio p { 
+    text-align: left; 
+    font-size: 0.88rem; 
+  }
+
+  .hero__projects-grid { 
+    grid-template-columns: 1fr; 
+  }
+
+  .hero__cta { 
+    flex-direction: column; 
+    gap: 0.8rem; 
+  }
 }
 </style>

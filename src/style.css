@@ -1,6 +1,9 @@
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body, #app { height: auto; min-height: 100vh; }
-body { background: #f5f0e8; } 
+*, *::before, *::after { box-sizing: border-box; }
+
+ h1, h2, h3, h4, p, ul, ol, figure {
+  margin: 0;
+  padding: 0;
+}
 
 .about, .skills, .portfolio, .resume, .contact {
   animation: fadeUp 0.6s ease both;
@@ -16,3 +19,32 @@ body { background: #f5f0e8; }
     transform: translateY(0);
   }
 }
+
+
+  :root {
+    --bg: #f5f0e8;
+    --bg-alt: #ede8df;
+    --ink: #1a1a1a;
+    --red: #EC4D37;
+    --border: #d0c9bc;
+    --card: #e8e2d8;
+    --card-dark: #d4cec5;
+    --glass-bg: rgba(245, 240, 232, 0.45);
+  }
+
+  html.dark {
+    --bg: #141414;
+    --bg-alt: #1e1e1e;
+    --ink: #f0ebe3;
+    --red: #EC4D37;
+    --border: #2e2e2e;
+    --card: #1e1e1e;
+    --card-dark: #252525;
+    --glass-bg: rgba(20, 20, 20, 0.55);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    transition: background 0.3s ease, color 0.3s ease;
+  }

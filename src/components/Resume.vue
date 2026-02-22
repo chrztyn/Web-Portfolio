@@ -103,12 +103,10 @@ const experiences = [
 
 <style scoped>
 .resume {
-  --cream: #f5f0e8;
-  --red: #EC4D37;
-  --ink: #1a1a1a;
-  background: #ede8df;
+  background: var(--bg-alt);
   min-height: 100vh;
   padding: 4rem 0 5rem;
+  transition: background 0.3s ease;
 }
 
 .resume__inner {
@@ -129,7 +127,7 @@ const experiences = [
 .resume__summary {
   border-left: 4px solid var(--red);
   padding: 1rem 1.5rem;
-  background: #e4dfd6;
+  background: var(--card);
   border-radius: 0 8px 8px 0;
   margin-bottom: 2.5rem;
   max-width: 680px;
@@ -138,7 +136,7 @@ const experiences = [
 
 .resume__summary:hover {
   border-left-color: var(--ink);
-  background: #ddd8ce;
+  background: var(--card-dark);
 }
 
 .resume__summary p {
@@ -178,7 +176,7 @@ const experiences = [
   display: block;
   width: 50px;
   height: 3px;
-  background: #c0b8ad;
+  background: var(--border);
   flex-shrink: 0;
 }
 
@@ -192,6 +190,7 @@ const experiences = [
   position: relative;
   padding-bottom: 0.4rem;
   cursor: default;
+  transition: color 0.3s ease;
 }
 
 .resume__section-title::after {
@@ -205,9 +204,7 @@ const experiences = [
   transition: width 0.3s ease;
 }
 
-.resume__section-title:hover::after {
-  width: 100%;
-}
+.resume__section-title:hover::after { width: 100%; }
 
 .resume__entry {
   display: flex;
@@ -215,7 +212,7 @@ const experiences = [
   gap: 0.2rem;
   position: relative;
   padding-left: 1.5rem;
-  border-left: 2px solid #d0c9bc;
+  border-left: 2px solid var(--border);
   transition: transform 0.2s ease, border-color 0.2s ease;
   cursor: default;
 }
@@ -232,13 +229,12 @@ const experiences = [
   transition: transform 0.2s ease;
 }
 
-.resume__entry:hover {
-  transform: translateX(6px);
-  border-left-color: var(--red);
+.resume__entry:hover { 
+  transform: translateX(6px); border-left-color: var(--red); 
 }
 
-.resume__entry:hover::before {
-  transform: scale(1.5);
+.resume__entry:hover::before { 
+  transform: scale(1.5); 
 }
 
 .resume__date {
@@ -255,8 +251,8 @@ const experiences = [
   transition: background 0.2s ease;
 }
 
-.resume__entry:hover .resume__date {
-  background: var(--ink);
+.resume__entry:hover .resume__date { 
+  background: var(--ink); 
 }
 
 .resume__degree {
@@ -268,8 +264,8 @@ const experiences = [
   transition: color 0.2s ease;
 }
 
-.resume__entry:hover .resume__degree {
-  color: var(--red);
+.resume__entry:hover .resume__degree { 
+  color: var(--red); 
 }
 
 .resume__school {
@@ -332,15 +328,15 @@ const experiences = [
   transition: filter 0.3s ease;
 }
 
-.resume__preview:hover .resume__img {
-  filter: blur(0px);
+.resume__preview:hover .resume__img { 
+  filter: blur(0px); 
 }
 
 .resume__download {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background: #c0b8ad;
+  background: var(--border);
   color: var(--ink);
   font-family: 'Satoshi-Variable', sans-serif;
   font-size: 0.85rem;
@@ -352,9 +348,8 @@ const experiences = [
   transition: background 0.2s ease, color 0.2s ease;
 }
 
-.resume__download:hover {
-  background: var(--red);
-  color: #fff;
+.resume__download:hover { 
+  background: var(--red); color: #fff; 
 }
 
 .resume__download-arrow {
@@ -362,16 +357,17 @@ const experiences = [
   transition: transform 0.2s ease;
 }
 
-.resume__download:hover .resume__download-arrow {
-  transform: translateY(3px);
+.resume__download:hover .resume__download-arrow { 
+  transform: translateY(3px); 
 }
 
 @media (max-width: 900px) {
   .resume__grid {
-    grid-template-columns: 1fr;
-  }
-  .resume__right {
-    position: static;
+     grid-template-columns: 1fr; 
+    }
+
+  .resume__right { 
+    position: static; 
   }
 }
 </style>

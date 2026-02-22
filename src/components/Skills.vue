@@ -29,13 +29,30 @@
                 :class="{ empty: !skill }"
               >
                 <template v-if="skill">
-                  <img :src="skill.icon" :alt="skill.name" class="skills__icon" />
+                  <div class="skills__icon-wrap">
+                    <img :src="skill.icon" :alt="skill.name" class="skills__icon" />
+                  </div>
                   <div class="skills__info">
                     <span class="skills__name">{{ skill.name }}</span>
                   </div>
+                  <div class="skills__card-glow"></div>
                 </template>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Mobile grid (flat 4x2) -->
+        <div class="skills__mobile-grid">
+          <div
+            v-for="skill in filteredSkills"
+            :key="skill.name"
+            class="skills__mobile-card"
+          >
+            <div class="skills__icon-wrap">
+              <img :src="skill.icon" :alt="skill.name" class="skills__icon" />
+            </div>
+            <span class="skills__name">{{ skill.name }}</span>
           </div>
         </div>
 
@@ -51,7 +68,6 @@ const categories = ['Frontend', 'Backend', 'Tools']
 const activeCategory = ref('Frontend')
 
 const skills = [
-  
   { name: 'HTML', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', level: 4, category: 'Frontend' },
   { name: 'CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', level: 3, category: 'Frontend' },
   { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', level: 3, category: 'Frontend' },
@@ -72,7 +88,7 @@ const skills = [
 
   { name: 'GitHub', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg', level: 3, category: 'Tools' },
   { name: 'Postman', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg', level: 3, category: 'Tools' },
-  { name: 'XAMPP', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xampp/xampp-original.svg', level: 3, category: 'Tools' },
+  { name: 'XAMPP', icon: 'https://www.apachefriends.org/images/xampp-logo-ac950edf.svg', category: 'Tools' },  
   { name: 'Figma', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg', level: 2, category: 'Tools' },
 ]
 
@@ -106,13 +122,9 @@ const columns = computed(() => {
 
 <style scoped>
 .skills {
-  --cream: #f5f0e8;
-  --red: #EC4D37;
-  --ink: #1a1a1a;
-  background:  #ede8df;
-  padding: 4rem 0 5rem;  
-  padding-top: 50rem;     
-  min-height: 100vh;  
+  background: var(--bg-alt);
+  padding: 4rem 0 5rem;
+  transition: background 0.3s ease;
 }
 
 .skills__inner {
@@ -122,7 +134,7 @@ const columns = computed(() => {
 }
 
 .skills__label {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 800;
   color: var(--red);
   margin: 0 0 0.8rem;
@@ -133,6 +145,7 @@ const columns = computed(() => {
   border: none;
   border-top: 2px solid var(--ink);
   margin: 0 0 2rem;
+  transition: border-color 0.3s ease;
 }
 
 .skills__layout {
@@ -159,7 +172,7 @@ const columns = computed(() => {
   cursor: pointer;
   text-align: left;
   padding: 0;
-  transition: opacity 0.2s ease, color 0.2s ease;
+  transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .skills__tab.active {
@@ -170,26 +183,17 @@ const columns = computed(() => {
   text-decoration-thickness: 2px;
 }
 
-.skills__tab:hover { opacity: 0.8; }
+.skills__tab:hover {
+  opacity: 0.8;
+  transform: translateX(4px);
+}
 
 .skills__grid-wrap {
   flex: 1;
   overflow: hidden;
-  min-width: 0;  
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 8%,
-    black 88%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 8%,
-    black 88%,
-    transparent 100%
-  );
+  min-width: 0;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 88%, transparent 100%);
 }
 
 .skills__grid {
@@ -198,7 +202,7 @@ const columns = computed(() => {
   gap: 0.8rem;
   align-items: start;
   padding: 1rem 0 2rem;
-  width: 100%;  
+  width: 100%;
 }
 
 .skills__col {
@@ -209,39 +213,68 @@ const columns = computed(() => {
 
 .skills__col:nth-child(1),
 .skills__col:nth-child(3) {
-  margin-top: -1.8rem;
+  margin-top: 0;
 }
 
 .skills__col:nth-child(2) {
-  margin-top: 1rem;
+  margin-top: -1.8rem;
 }
 
 .skills__card {
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  border: 1.5px solid #d0c9bc;
+  border: 1.5px solid var(--border);
   border-radius: 12px;
   padding: 0.9rem 1rem;
-  background: transparent;
+  background: var(--bg);
   min-height: 68px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, background 0.3s ease;
 }
 
 .skills__card:hover:not(.empty) {
   border-color: var(--red);
-  box-shadow: 0 2px 12px rgba(236, 77, 55, 0.1);
+  box-shadow: 0 4px 20px rgba(236, 77, 55, 0.15);
+  transform: translateY(-3px);
 }
 
 .skills__card.empty {
   cursor: default;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.skills__card-glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(236, 77, 55, 0.06) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.skills__card:hover:not(.empty) .skills__card-glow { 
+  opacity: 1; 
+}
+
+.skills__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.skills__card:hover:not(.empty) .skills__icon-wrap {
+  transform: scale(1.2) rotate(-5deg);
 }
 
 .skills__icon {
   width: 36px;
   height: 36px;
   object-fit: contain;
-  flex-shrink: 0;
 }
 
 .skills__info {
@@ -255,28 +288,98 @@ const columns = computed(() => {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--ink);
+  transition: color 0.2s ease;
 }
 
+.skills__card:hover:not(.empty) .skills__name { 
+  color: var(--red); 
+}
+
+.skills__mobile-grid { 
+  display: none; 
+}
 
 @media (max-width: 768px) {
-  .skills__layout {
+  .skills__layout { 
+    flex-direction: column; 
+    gap: 2rem; 
+  }
+
+  .skills__tabs { 
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    gap: 0.8rem; 
+  }
+
+  .skills__grid-wrap { 
+    display: none; 
+  }
+
+  .skills__mobile-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.7rem;
+    width: 100%;
+  }
+
+  .skills__mobile-card {
+    display: flex;
     flex-direction: column;
-    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 0.5rem;
+    background: var(--bg);
+    text-align: center;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, background 0.3s ease;
+    cursor: default;
   }
-  .skills__tabs {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.8rem;
+
+  .skills__mobile-card:hover {
+    border-color: var(--red);
+    box-shadow: 0 4px 16px rgba(236, 77, 55, 0.15);
+    transform: translateY(-3px);
   }
-  .skills__grid {
-    grid-template-columns: repeat(2, 1fr);
+
+  .skills__mobile-card:hover .skills__icon-wrap { 
+    transform: scale(1.2) rotate(-5deg); 
   }
-  .skills__col:nth-child(1),
-  .skills__col:nth-child(3) {
-    margin-top: 0;
+
+  .skills__mobile-card:hover .skills__name { 
+    color: var(--red); 
   }
-  .skills__col:nth-child(2) {
-    margin-top: 0;
+
+  .skills__mobile-card .skills__icon { 
+    width: 30px; height: 30px;
+   }
+
+  .skills__mobile-card .skills__name {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--ink);
+    transition: color 0.2s ease;
+  }
+}
+
+@media (max-width: 480px) {
+  .skills__mobile-grid { 
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem; 
+  }
+
+  .skills__mobile-card { 
+    padding: 0.8rem 0.3rem; 
+  }
+
+  .skills__mobile-card .skills__icon { 
+    width: 26px; 
+    height: 26px; 
+  }
+
+  .skills__mobile-card .skills__name { 
+    font-size: 0.62rem; 
   }
 }
 </style>
