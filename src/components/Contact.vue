@@ -93,7 +93,7 @@ const sendMessage = () => {
   --cream: #f5f0e8;
   --red: #EC4D37;
   --ink: #1a1a1a;
-  background: var(--cream);
+  background: #f5f0e8;;
   min-height: 100vh;
   padding: 4rem 0 5rem;
 }

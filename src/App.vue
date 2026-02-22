@@ -21,7 +21,7 @@ section#about {
 }
 
 section#skills {
-  padding: 0;
+  padding: 5rem 0 5rem;
   min-height: auto;
     margin-top: 4rem;  
 
@@ -35,7 +35,7 @@ section#portfolio {
 }
 
 section#resume {
-  padding: 0;
+  padding: 5rem 0 5rem;
   min-height: auto;
     margin-top: 4rem; 
 }

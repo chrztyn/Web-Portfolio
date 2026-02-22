@@ -107,7 +107,7 @@ const techStack = [
   --ink: #1a1a1a;
   --font-display: 'Satoshi-Variable', sans-serif;
 
-  background: var(--cream);
+  background:  #f5f0e8;
   padding: 0;
 }
 
@@ -120,10 +120,10 @@ const techStack = [
 }
 
 .about__label {
-  font-size: 1rem;
+  font-size: 2.5rem;
   font-weight: 600;
-  letter-spacing: 0.15em;
-  color: var(--ink);
+  letter-spacing: 0.10em;
+  color: var(--red);
   opacity: 0.5;
   margin: 0 0 1.5rem;
   text-transform: uppercase;

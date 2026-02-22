@@ -109,7 +109,7 @@ const columns = computed(() => {
   --cream: #f5f0e8;
   --red: #EC4D37;
   --ink: #1a1a1a;
-  background: var(--cream);
+  background:  #ede8df;
   padding: 4rem 0 5rem;  
   padding-top: 50rem;     
   min-height: 100vh;  
@@ -122,9 +122,9 @@ const columns = computed(() => {
 }
 
 .skills__label {
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   font-weight: 800;
-  color: var(--ink);
+  color: var(--red);
   margin: 0 0 0.8rem;
   font-family: 'Satoshi-Variable', sans-serif;
 }

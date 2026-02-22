@@ -136,7 +136,7 @@ const designCerts = [
   background: none;
   border: none;
   font-family: 'Satoshi-Variable', sans-serif;
-  font-size: 1.3rem;
+  font-size: 2rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   color: var(--ink);
