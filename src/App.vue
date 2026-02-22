@@ -88,6 +88,50 @@ html {
   scroll-behavior: smooth;
 }
 
+section {
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(16px);
+  transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease;
+}
+
+section.in-view {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateY(0);
+}
+
+.card,
+.cert__card,
+.resume__entry {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+section.in-view .card:nth-child(1),
+section.in-view .cert__card:nth-child(1),
+section.in-view .resume__entry:nth-child(1) { transition-delay: 0.3s; }
+
+section.in-view .card:nth-child(2),
+section.in-view .cert__card:nth-child(2),
+section.in-view .resume__entry:nth-child(2) { transition-delay: 0.45s; }
+
+section.in-view .card:nth-child(3),
+section.in-view .cert__card:nth-child(3),
+section.in-view .resume__entry:nth-child(3) { transition-delay: 0.6s; }
+
+section.in-view .card:nth-child(4),
+section.in-view .cert__card:nth-child(4),
+section.in-view .resume__entry:nth-child(4) { transition-delay: 0.75s; }
+
+section.in-view .card,
+section.in-view .cert__card,
+section.in-view .resume__entry {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 body {
   font-family: 'Satoshi-Variable', sans-serif;
   background: var(--bg);
