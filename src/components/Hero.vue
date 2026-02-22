@@ -112,6 +112,7 @@ const featuredProjects = [
   padding-top: 0.5rem;
   position: relative;
   overflow: hidden;
+  overflow-x: hidden;
 }
 
 .hero::before {
@@ -126,18 +127,20 @@ const featuredProjects = [
 
 .hero__inner {
   width: 100%;
-  max-width: 100%;   
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0;
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
 }
 
 .hero__row-top {
   display: flex;
+  flex-wrap: wrap; 
   align-items: flex-end;
-  gap: 3rem;
+  gap: 1.5rem;
 }
 
 .hero__hello {
@@ -151,17 +154,13 @@ const featuredProjects = [
   letter-spacing: -0.02em;
   opacity: 0;
   animation: fadeUp 0.7s ease 0.1s forwards;
+  flex-shrink: 0;
 }
 
 .hero__badge {
-  position: relative;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   gap: 0;
-  margin: 0;
-  line-height: 0;            
-  font-size: 0;           
-  align-items: flex-start;
 }
 
 .hero__badge span {
@@ -175,9 +174,9 @@ const featuredProjects = [
   font-weight: 700;
   text-transform: lowercase;
   letter-spacing: -0.01em;
-  font-size: clamp(1.3rem, 2.6vw, 2.4rem);
+    font-size: clamp(0.7rem, 2.5vw, 2.4rem);
+  padding: 0.4em 0.8em;
   line-height: 1;        
-  padding: 0.5em 1em;        
   border-radius: 9999px;     
   margin: 0;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
@@ -192,7 +191,7 @@ const featuredProjects = [
 
 .hero__badge span:last-child {
   margin-top: -0.35em;
-  margin-left: 3.3em;
+  margin-left: 1.5em;
   opacity: 0;
   animation: stackSecond 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s forwards;
 }
@@ -210,7 +209,7 @@ const featuredProjects = [
 .hero__row-mid {
   display: flex;
   align-items: center;
-  gap: clamp(0.6rem, 1.5vw, 1.5rem);
+  gap: clamp(0.3rem, 2vw, 1.5rem);
   margin-top: 0rem;
 }
 
@@ -461,6 +460,19 @@ const featuredProjects = [
 }
 
 @media (max-width: 768px) {
+    .hero {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .hero__row-top {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .hero__badge span:last-child {
+    margin-left: 0.8em;
+  }
   .hero__inner {
     padding-left: 1.5rem;
   }

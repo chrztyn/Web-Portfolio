@@ -1,7 +1,7 @@
-
 <template>
-  <header class="site-header" :class="{ scrolled: isScrolled }" id="siteHeader" role="banner">
-    <nav class="nav" role="navigation" aria-label="Primary Navigation">
+  <header class="site-header" :class="{ scrolled: isScrolled }">
+
+    <nav class="nav" aria-label="Primary Navigation">
       <a href="#home" class="nav-brand">
         <span class="nav-logo-wrap">
           <img src="../assets/images/logo.png" alt="Christine Mae Yunun Logo" class="nav-logo">
@@ -9,126 +9,119 @@
         <span class="nav-name">Christine Mae Yunun</span>
       </a>
 
-      <ul class="nav-links" role="list">
-        <li>
-          <a href="#about" aria-label="About">
-            <User class="nav-icon" />
-            <span>About</span>
-          </a>
-        </li>
-<li>
-  <a href="#skills" aria-label="Skills">
-    <CodeXml class="nav-icon" />
-    <span>Skills</span>
-  </a>
-</li>
-<li>
-  <a href="#portfolio" aria-label="Portfolio">
-    <Folder class="nav-icon" />
-    <span>Portfolio</span>
-  </a>
-</li>
-<li>
-  <a href="#resume" aria-label="Resume">
-    <File class="nav-icon" />
-    <span>Resume</span>
-  </a>
-</li>
-<li>
-  <a href="#contact" aria-label="Contact">
-    <Mail class="nav-icon" />
-    <span>Contact</span>
-  </a>
-</li>
+      <ul class="nav-links">
+        <li><a href="#about"><User class="nav-icon" /><span>About</span></a></li>
+        <li><a href="#skills"><CodeXml class="nav-icon" /><span>Skills</span></a></li>
+        <li><a href="#portfolio"><Folder class="nav-icon" /><span>Portfolio</span></a></li>
+        <li><a href="#resume"><File class="nav-icon" /><span>Resume</span></a></li>
+        <li><a href="#contact"><Mail class="nav-icon" /><span>Contact</span></a></li>
       </ul>
+
+      <button
+        class="nav-hamburger"
+        @click="menuOpen = !menuOpen"
+        :aria-expanded="menuOpen"
+        aria-label="Toggle navigation"
+      >
+        <span class="bar" :class="{ open: menuOpen }"></span>
+        <span class="bar" :class="{ open: menuOpen }"></span>
+        <span class="bar" :class="{ open: menuOpen }"></span>
+      </button>
     </nav>
+
+    <div class="nav-mobile" :class="{ open: menuOpen }">
+      <ul>
+        <li><a href="#about" @click="menuOpen = false"><User class="nav-icon" /><span>About</span></a></li>
+        <li><a href="#skills" @click="menuOpen = false"><CodeXml class="nav-icon" /><span>Skills</span></a></li>
+        <li><a href="#portfolio" @click="menuOpen = false"><Folder class="nav-icon" /><span>Portfolio</span></a></li>
+        <li><a href="#resume" @click="menuOpen = false"><File class="nav-icon" /><span>Resume</span></a></li>
+        <li><a href="#contact" @click="menuOpen = false"><Mail class="nav-icon" /><span>Contact</span></a></li>
+      </ul>
+    </div>
+
   </header>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { CodeXml, Folder, File, Mail, User } from 'lucide-vue-next'
 
 const isScrolled = ref(false)
+const menuOpen = ref(false)
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 80
+  if (menuOpen.value) menuOpen.value = false
 }
 
-onMounted(() => window.addEventListener('scroll', handleScroll))
+onMounted(() => window.addEventListener('scroll', handleScroll, { passive: true }))
 onUnmounted(() => window.removeEventListener('scroll', handleScroll))
-
-import { CodeXml, Folder, File, Mail, User } from 'lucide-vue-next'
 </script>
 
 <style scoped>
+*, *::before, *::after { box-sizing: border-box; }
+
+
 .site-header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: #f5f0e8; 
-  transition: all 0.35s ease;
+  width: 100%;
+  background: #f5f0e8;
 }
+
 
 .nav {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem 2.5rem;
-  min-height: 40px;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem 2rem;
   border-bottom: 2px solid #1D1B1B;
-  transition: all 0.35s ease;
+  background: #f5f0e8;
+  min-width: 0;
 }
+
 
 .nav-brand {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   text-decoration: none;
   color: #1D1B1B;
   font-weight: 700;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .nav-logo-wrap {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  flex-shrink: 0;
   display: grid;
   place-items: center;
   overflow: hidden;
-  flex-shrink: 0;
 }
 
-.nav-logo {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
-}
+.nav-logo { width: 70%; height: 70%; object-fit: contain; }
 
 .nav-name {
   font-family: 'Satoshi-Variable', Arial, sans-serif;
   font-weight: 700;
-  font-size: 1.1rem;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  font-size: 1rem;
   white-space: nowrap;
 }
 
+
 .nav-links {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 2rem;
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.nav-links li {
-  display: flex;
-  align-items: center;
+  flex: 1;
 }
 
 .nav-links a {
@@ -137,72 +130,170 @@ import { CodeXml, Folder, File, Mail, User } from 'lucide-vue-next'
   gap: 0.4rem;
   text-decoration: none;
   color: #1D1B1B;
+  font-size: 0.95rem;
   font-weight: 500;
-  transition: color 0.3s ease, filter 0.3s ease;
+  transition: color 0.2s ease;
 }
 
-.nav-links a:hover span {
-  color: #EC4D37;
-}
+.nav-links a:hover span { color: #EC4D37; }
+.nav-icon { width: 20px; height: 20px; }
 
-.nav-links a:hover img {
-  filter: brightness(0.5) sepia(1) hue-rotate(-20deg) saturate(5);
-}
 
-.nav-icon {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-}
-
-.site-header.scrolled {
-  background-color: transparent;
-  padding-top: 1rem;        
-}
-
-.site-header.scrolled .nav {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 999px;
-  border: none;
-  padding: 0.8rem 2rem;    
-  margin-top: 1rem;
-  margin-left: auto;
-  margin-right: auto;
-  width: fit-content;
-  gap: 2rem;
-  justify-content: center;
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.1),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-}
-
-.site-header.scrolled .nav-name {
+.nav-hamburger {
   display: none;
-}
-
-.site-header.scrolled .nav-links {
-  position: static;
-  transform: none;
-  gap: 1.8rem;
-}
-
-.site-header.scrolled .nav-links li span {
-  display: none;
-}
-
-.site-header.scrolled .nav-contact a {
+  flex-direction: column;
+  gap: 5px;
   background: none;
-  border-radius: 0;
-  width: auto;
-  height: auto;
-  display: flex;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
-.site-header.scrolled .nav-contact a img {
-  filter: none;
-  width: 20px;
-  height: 20px;
+.bar {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #1D1B1B;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.bar:nth-child(1).open { transform: translateY(7px) rotate(45deg); }
+.bar:nth-child(2).open { opacity: 0; }
+.bar:nth-child(3).open { transform: translateY(-7px) rotate(-45deg); }
+
+
+.nav-mobile {
+  display: none;
+  width: 100%;
+  background: #f5f0e8;
+  border-bottom: 2px solid #1D1B1B;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.35s ease;
+}
+
+.nav-mobile.open { max-height: 400px; }
+
+.nav-mobile ul {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-mobile a {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  color: #1D1B1B;
+  font-weight: 600;
+  font-size: 1rem;
+  border-bottom: 1px solid #d0c9bc;
+  transition: color 0.2s ease, background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-mobile ul li:last-child a { border-bottom: none; }
+.nav-mobile a:active { color: #EC4D37; background: #ede8df; }
+
+
+@media (min-width: 769px) {
+  .site-header.scrolled {
+    background: transparent;
+    padding-top: 1.2rem;
+  }
+
+  .site-header.scrolled .nav {
+    transform: translateZ(0);
+    will-change: transform;
+
+    width: fit-content;
+    margin: 1rem auto 0;
+    padding: 0.6rem 1.8rem;
+    border: none;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    gap: 1.5rem;
+    flex: unset;
+  }
+
+  .site-header.scrolled .nav-brand { flex-shrink: 0; }
+  .site-header.scrolled .nav-name { display: none; }
+  .site-header.scrolled .nav-links { flex: unset; gap: 1.5rem; }
+  .site-header.scrolled .nav-links span { display: none; }
+}
+
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .nav { padding: 1rem 1.5rem; }
+  .nav-links { gap: 1.2rem; }
+  .nav-links a { font-size: 0.88rem; }
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    background: #f5f0e8 !important;
+    padding: 0 !important;
+    transition: none !important;
+  }
+
+  .nav {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-bottom: 2px solid #1D1B1B;
+    background: #f5f0e8;
+    justify-content: space-between;
+  }
+
+  .site-header.scrolled .nav {
+    all: unset;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    padding: 0.85rem 1rem !important;
+    border-bottom: 2px solid #1D1B1B !important;
+    background: #f5f0e8 !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: none !important;
+  }
+
+  .site-header.scrolled .nav-name {
+    display: block !important;
+    color: #1D1B1B !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    white-space: nowrap !important;
+  }
+
+  .site-header.scrolled .nav-links { display: none !important; }
+  .site-header.scrolled .nav-hamburger { display: flex !important; }
+
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-mobile { display: block; }
+}
+
+@media (max-width: 390px) {
+  .nav { padding: 0.75rem 0.85rem; }
+  .nav-name { font-size: 0.88rem; }
+  .nav-logo-wrap { width: 24px; height: 24px; }
+  .bar { width: 22px; }
 }
 </style>
