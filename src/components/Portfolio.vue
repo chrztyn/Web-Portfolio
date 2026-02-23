@@ -2,6 +2,8 @@
   <section class="portfolio" id="portfolio" aria-label="Portfolio">
     <div class="portfolio__inner">
 
+      <p class="portfolio__label">PORTFOLIO</p>
+
       <div class="portfolio__tabs" role="tablist">
         <button
           class="portfolio__tab"
@@ -19,12 +21,14 @@
       <hr class="portfolio__divider" />
 
       <div v-if="activeTab === 'projects'" class="portfolio__projects">
+        <p class="portfolio__hint">click a card to view details</p>
         <div class="stack-container">
           <div
             class="card"
             v-for="(project, index) in projects"
             :key="project.title"
             :style="{ zIndex: projects.length - index }"
+            @click="openModal(project)"
           >
             <div class="card__img">
               <img :src="project.image" :alt="project.title" />
@@ -33,93 +37,217 @@
               </div>
             </div>
             <div class="card__body">
-              <p class="card__tech">{{ project.tech }}</p>  
+              <p class="card__tech">{{ project.tech }}</p>
               <h3 class="card__title">{{ project.title }}</h3>
               <p class="card__desc">{{ project.description }}</p>
-              <a :href="project.link" class="card__btn" target="_blank" rel="noopener">
-                <span>View Project</span>
+              <span class="card__btn">
+                <span>View Details</span>
                 <span class="card__btn-arrow">↗</span>
-              </a>
+              </span>
             </div>
           </div>
         </div>
       </div>
 
       <div v-if="activeTab === 'certifications'" class="portfolio__certs">
-        <p class="certs__category-label">TECHNICAL &amp; DEVELOPMENT</p>
-        <div class="certs__grid">
-          <div class="cert__card" v-for="cert in techCerts" :key="cert.title">
-            <div class="cert__accent"></div>
-            <div class="cert__body">
-              <h3 class="cert__title">{{ cert.title }}</h3>
-              <p class="cert__issuer">{{ cert.issuer }}</p>
-              <p class="cert__date">{{ cert.date }}</p>
-              <a :href="cert.link" target="_blank" rel="noopener" class="cert__btn">
-                <span>View Certificate</span>
-                <span class="cert__btn-arrow">↗</span>
-              </a>
+
+        <div class="certs__section">
+          <div class="certs__section-header">
+            <span class="certs__section-line"></span>
+            <p class="certs__category-label">TECHNICAL &amp; DEVELOPMENT</p>
+          </div>
+          <div class="certs__grid">
+            <div class="cert__card" v-for="cert in techCerts" :key="cert.title">
+              <div class="cert__accent"></div>
+              <div class="cert__top">
+                <span class="cert__badge">{{ cert.issuer[0] }}</span>
+                <span class="cert__date">{{ cert.date }}</span>
+              </div>
+              <div class="cert__body">
+                <h3 class="cert__title">{{ cert.title }}</h3>
+                <p class="cert__issuer">{{ cert.issuer }}</p>
+                <a :href="cert.link" target="_blank" rel="noopener" class="cert__btn">
+                  <span>View Certificate</span>
+                  <span class="cert__btn-arrow">↗</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
 
-        <p class="certs__category-label" style="margin-top: 2rem;">DESIGN / UX</p>
-        <div class="certs__grid">
-          <div class="cert__card" v-for="cert in designCerts" :key="cert.title">
-            <div class="cert__accent"></div>
-            <div class="cert__body">
-              <h3 class="cert__title">{{ cert.title }}</h3>
-              <p class="cert__issuer">{{ cert.issuer }}</p>
-              <p class="cert__date">{{ cert.date }}</p>
-              <a :href="cert.link" target="_blank" rel="noopener" class="cert__btn">
-                <span>View Certificate</span>
-                <span class="cert__btn-arrow">↗</span>
-              </a>
+        <div class="certs__section">
+          <div class="certs__section-header">
+            <span class="certs__section-line"></span>
+            <p class="certs__category-label">DESIGN / UX</p>
+          </div>
+          <div class="certs__grid">
+            <div class="cert__card" v-for="cert in designCerts" :key="cert.title">
+              <div class="cert__accent"></div>
+              <div class="cert__top">
+                <span class="cert__badge">{{ cert.issuer[0] }}</span>
+                <span class="cert__date">{{ cert.date }}</span>
+              </div>
+              <div class="cert__body">
+                <h3 class="cert__title">{{ cert.title }}</h3>
+                <p class="cert__issuer">{{ cert.issuer }}</p>
+                <a :href="cert.link" target="_blank" rel="noopener" class="cert__btn">
+                  <span>View Certificate</span>
+                  <span class="cert__btn-arrow">↗</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
-
     </div>
+
+    <Teleport to="body">
+      <Transition name="modal">
+        <div class="modal__overlay" v-if="selectedProject" @click.self="closeModal">
+          <div class="modal__box">
+            <button class="modal__close" @click="closeModal" aria-label="Close">✕</button>
+
+            <div class="modal__img">
+              <img :src="selectedProject.image" :alt="selectedProject.title" />
+            </div>
+
+            <div class="modal__content">
+              <p class="modal__tech">{{ selectedProject.tech }}</p>
+              <h2 class="modal__title">{{ selectedProject.title }}</h2>
+              <hr class="modal__divider" />
+
+              <div class="modal__section" v-for="(section, i) in selectedProject.details" :key="i">
+                <h4 class="modal__section-title">{{ section.heading }}</h4>
+                <p class="modal__section-text">{{ section.text }}</p>
+              </div>
+
+              <div class="modal__actions">
+                <a :href="selectedProject.link" class="modal__btn" target="_blank" rel="noopener">
+                  <span>View Project</span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import SplitSmart from '../assets/images/splitsmart.png'
 import NonTaMangan from '../assets/images/nontamangan.png'
 import BuffsChicken from '../assets/images/buffschicken.png'
 import Pelikula from '../assets/images/pelikula.png'
 
 const activeTab = ref('projects')
+const selectedProject = ref(null)
+
+const openModal = (project) => {
+  selectedProject.value = project
+  document.body.style.overflow = 'hidden'
+}
+
+const closeModal = () => {
+  selectedProject.value = null
+  document.body.style.overflow = ''
+}
+
+const handleKey = (e) => {
+  if (e.key === 'Escape') closeModal()
+}
+
+onMounted(() => window.addEventListener('keydown', handleKey))
+onUnmounted(() => window.removeEventListener('keydown', handleKey))
 
 const projects = [
   {
     title: 'SplitSmart',
     tech: 'Node.js · Express.js · MongoDB',
-    description: 'I developed a web application that automates group expense tracking, designing RESTful APIs and a robust database architecture to ensure efficient data handling. The project included implementing secure authentication and full CRUD operations, enabling smooth user interaction and management. Working within an agile workflow, I collaborated closely with a team to iteratively refine features, maintain clear communication, and deliver a reliable solution.',
+    description: 'A web app that automates group expense tracking with RESTful APIs, secure authentication, and full CRUD operations.',
     image: SplitSmart,
-    link: '#'
+    link: '#',
+    details: [
+      {
+        heading: 'Overview',
+        text: 'SplitSmart is a web application designed to automate and simplify group expense tracking among friends, families, or teams.'
+      },
+      {
+        heading: 'What I Did',
+        text: 'I designed the RESTful API architecture and built the database schema in MongoDB to ensure efficient and scalable data handling. I implemented secure user authentication using JWT, and developed full CRUD operations to allow users to create, manage, and settle expenses seamlessly.'
+      },
+      {
+        heading: 'Collaboration & Process',
+        text: 'Working within an agile workflow, I collaborated closely with teammates to iteratively refine features, maintain clear communication through regular standups, and deliver a reliable solution on schedule.'
+      },
+    ]
   },
   {
     title: 'Non Ta Mangan',
     tech: 'PHP · MySQL · JavaScript',
-    description: 'I developed a “spin-the-wheel” feature for restaurant selection, enhancing user engagement by adding an interactive decision-making tool. The application also integrated a rating system and comprehensive user account management to personalize experiences and ensure secure access. Working collaboratively within a team, I contributed to delivering a fully functional web application by following agile practices and iteratively refining features to meet user needs.',
+    description: 'A restaurant picker and rating web app with a spin-the-wheel feature, rating system, and user account management.',
     image: NonTaMangan,
-    link: '#'
+    link: '#',
+    details: [
+      {
+        heading: 'Overview',
+        text: 'Non Ta Mangan is a fun and interactive web app that helps users decide where to eat using a spin-the-wheel mechanic for restaurant selection.'
+      },
+      {
+        heading: 'What I Did',
+        text: 'I developed the spin-the-wheel feature using JavaScript to enhance user engagement with an interactive decision-making tool. I also built the restaurant rating system and a comprehensive user account management module, including secure login, registration, and session handling with PHP and MySQL.'
+      },
+      {
+        heading: 'Collaboration & Process',
+        text: 'Following agile practices within a team, I contributed to feature planning, iterative development, and QA to ensure a fully functional and user-friendly application at delivery.'
+      },
+    ]
   },
   {
     title: 'Pelikula',
     tech: 'HTML · CSS · JavaScript',
-    description: 'I designed a static web prototype for browsing, rating, and reviewing movies, with a strong emphasis on UI consistency and responsive layout. The project focused on creating a clean, intuitive interface that adapts seamlessly across devices, ensuring a smooth user experience while maintaining visual coherence.',
+    description: 'A static web prototype for browsing, rating, and reviewing movies with a focus on UI consistency and responsive layout.',
     image: Pelikula,
-    link: '#'
+    link: '#',
+    details: [
+      {
+        heading: 'Overview',
+        text: 'Pelikula is a static web prototype designed for browsing, rating, and reviewing movies — built with a strong emphasis on clean UI and responsiveness.'
+      },
+      {
+        heading: 'What I Did',
+        text: 'I designed and coded the entire interface using HTML, CSS, and vanilla JavaScript, focusing on UI consistency across all pages and ensuring the layout adapts seamlessly across different device sizes. Special attention was given to component reusability and visual coherence throughout the prototype.'
+      },
+      {
+        heading: 'Key Focus',
+        text: 'This project prioritized front-end fundamentals — semantic HTML structure, well-organized CSS, and accessible design patterns — to create an intuitive and smooth user experience.'
+      },
+    ]
   },
   {
     title: 'BuffsChicken',
     tech: 'Vue · Nuxt · Express.js',
-    description: 'I developed an SEO focused e-commerce website for a chicken brand, where I designed the system architecture to ensure scalability, efficiency, and smooth integration of features. The backend was powered by Express.js, providing a robust API for secure data handling and streamlined product management. To boost search visibility and performance,server-side rendering with Nuxt was implemented.',
+    description: 'An SEO-focused e-commerce website for a chicken brand built with Nuxt for server-side rendering and Express.js backend.',
     image: BuffsChicken,
-    link: '#'
+    link: '#',
+    details: [
+      {
+        heading: 'Overview',
+        text: 'BuffsChicken is an SEO-focused e-commerce website built for a chicken brand, designed to maximize online visibility while delivering a smooth shopping experience.'
+      },
+      {
+        heading: 'What I Did',
+        text: 'I designed the system architecture to ensure scalability and efficient feature integration. The backend was built with Express.js to provide a robust API for secure data handling and streamlined product management. I implemented server-side rendering using Nuxt to boost search engine performance and page load speed.'
+      },
+      {
+        heading: 'Technical Highlights',
+        text: 'The SSR setup with Nuxt significantly improved SEO scores compared to a traditional SPA approach. I also structured the Express.js API with clean RESTful conventions, making it easy to extend for future features like promotions or loyalty programs.'
+      },
+    ]
   },
 ]
 
@@ -151,6 +279,15 @@ const designCerts = [
   padding-right: clamp(2rem, 5vw, 5rem);
 }
 
+.portfolio__label {
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--red);
+  margin: 0 0 1.5rem;
+  font-family: 'Satoshi-Variable', sans-serif;
+}
+
 .portfolio__tabs {
   display: flex;
   gap: 2.5rem;
@@ -161,7 +298,7 @@ const designCerts = [
   background: none;
   border: none;
   font-family: 'Satoshi-Variable', sans-serif;
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   color: var(--ink);
@@ -186,12 +323,23 @@ const designCerts = [
 .portfolio__divider {
   border: none;
   border-top: 1.5px solid var(--border);
-  margin: 0 0 3rem;
+  margin: 0 0 1.5rem;
   transition: border-color 0.3s ease;
+}
+
+.portfolio__hint {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  opacity: 0.4;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 0 1.5rem;
 }
 
 .portfolio__projects {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -221,9 +369,7 @@ const designCerts = [
   cursor: pointer;
 }
 
-.card:first-child { 
-  margin-left: 0; 
-}
+.card:first-child { margin-left: 0; }
 
 .card:hover {
   transform: translateY(-16px) rotate(-1deg);
@@ -231,9 +377,7 @@ const designCerts = [
   box-shadow: 0 28px 56px rgba(0, 0, 0, 0.22), 0 0 0 1.5px var(--red);
 }
 
-.card:hover ~ .card { 
-  transform: translateX(160px); 
-}
+.card:hover ~ .card { transform: translateX(160px); }
 
 .stack-container:hover .card:not(:hover):has(~ .card:hover) {
   transform: translateX(-30px);
@@ -245,6 +389,7 @@ const designCerts = [
   margin: 1rem auto 0;
   border-radius: 8px;
   overflow: hidden;
+  position: relative;
 }
 
 .card__img img {
@@ -260,26 +405,20 @@ const designCerts = [
   filter: brightness(0.85);
 }
 
-.card__tech {
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--red);
-  letter-spacing: 0.05em;
-  margin: 0;
+.card__img-overlay {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
 }
 
 .card__img-label {
   background: rgba(236, 77, 55, 0.9);
   color: #fff;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  padding: 0.3em 0.8em;
+  padding: 0.25em 0.7em;
   border-radius: 9999px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
 }
 
 .card__body {
@@ -288,6 +427,14 @@ const designCerts = [
   flex-direction: column;
   gap: 0.4rem;
   flex: 1;
+}
+
+.card__tech {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--red);
+  letter-spacing: 0.05em;
+  margin: 0;
 }
 
 .card__title {
@@ -299,19 +446,17 @@ const designCerts = [
   transition: color 0.2s ease;
 }
 
-.card:hover .card__title { 
-  color: var(--red); 
-}
+.card:hover .card__title { color: var(--red); }
 
 .card__desc {
-  font-size: 0.60rem;
+  font-size: 0.72rem;
   line-height: 1.55;
   color: var(--ink);
   opacity: 0.65;
   margin: 0;
   flex: 1;
-    display: -webkit-box;
-  -webkit-line-clamp: 5;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -331,20 +476,198 @@ const designCerts = [
   border-radius: 999px;
   align-self: flex-start;
   transition: background 0.2s ease, gap 0.2s ease, color 0.2s ease;
+  cursor: pointer;
 }
 
-.card__btn:hover {
+.card:hover .card__btn {
   background: var(--red);
   color: #fff;
   gap: 0.6rem;
 }
 
-.card__btn-arrow {
-   transition: transform 0.2s ease; 
+.card__btn-arrow { 
+  transition: transform 0.2s ease; 
 }
 
-.card__btn:hover .card__btn-arrow {
+.card:hover .card__btn-arrow { 
   transform: translate(2px, -2px); 
+}
+
+.modal__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal__box {
+  position: relative; 
+  background: var(--bg);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
+  border: 1.5px solid var(--border);
+}
+
+.modal__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  float: none;
+  margin: 0;
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s;
+  z-index: 2;
+}
+
+.modal__close:hover {
+  background: var(--red);
+}
+
+
+.modal__img {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+  margin-top: 0;  
+}
+
+.modal__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.modal__content {
+  padding: 1.8rem 2rem 2rem;
+}
+
+.modal__tech {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.08em;
+  margin: 0 0 0.4rem;
+}
+
+.modal__title {
+  font-family: 'Satoshi-Variable', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--ink);
+  margin: 0 0 1rem;
+  letter-spacing: -0.01em;
+}
+
+.modal__divider {
+  border: none;
+  border-top: 1.5px solid var(--border);
+  margin: 0 0 1.5rem;
+}
+
+.modal__section {
+  margin-bottom: 1.2rem;
+}
+
+.modal__section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin: 0 0 0.4rem;
+}
+
+.modal__section-text {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--ink);
+  opacity: 0.8;
+  margin: 0;
+}
+
+.modal__actions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.8rem;
+}
+
+.modal__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.7rem 1.8rem;
+  border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.modal__btn:hover {
+  background: var(--red);
+  color: #fff;
+}
+
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.3s ease;
+}
+.modal-enter-active .modal__box,
+.modal-leave-active .modal__box {
+  transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.3s ease;
+}
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+.modal-enter-from .modal__box,
+.modal-leave-to .modal__box {
+  transform: scale(0.92) translateY(20px);
+  opacity: 0;
+}
+
+.certs__section {
+  margin-bottom: 2.5rem;
+}
+
+.certs__section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.certs__section-line {
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--red);
+  flex-shrink: 0;
 }
 
 .certs__category-label {
@@ -352,8 +675,8 @@ const designCerts = [
   font-weight: 700;
   letter-spacing: 0.15em;
   color: var(--ink);
-  opacity: 0.5;
-  margin: 0 0 1rem;
+  opacity: 0.6;
+  margin: 0;
   text-transform: uppercase;
 }
 
@@ -387,10 +710,39 @@ const designCerts = [
   height: 0%;
   background: var(--red);
   transition: height 0.3s ease;
-  border-radius: 0 0 3px 0;
 }
 
-.cert__card:hover .cert__accent { height: 100%; }
+.cert__card:hover .cert__accent { 
+  height: 100%; 
+}
+
+.cert__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.cert__badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--red);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  font-family: 'Satoshi-Variable', sans-serif;
+}
+
+.cert__date {
+  font-size: 0.7rem;
+  color: var(--ink);
+  opacity: 0.45;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
 
 .cert__title {
   font-size: 0.88rem;
@@ -401,41 +753,37 @@ const designCerts = [
   transition: color 0.2s ease;
 }
 
-.cert__card:hover .cert__title { color: var(--red); }
-
-.cert__issuer {
-  font-size: 0.78rem;
-  color: var(--red);
-  margin: 0;
-  font-weight: 600;
+.cert__card:hover .cert__title { 
+  color: var(--red); 
 }
 
-.cert__date {
-  font-size: 0.73rem;
+.cert__issuer {
+  font-size: 0.75rem;
   color: var(--ink);
   opacity: 0.5;
-  margin: 0.2rem 0 0;
+  margin: 0;
+  font-weight: 500;
 }
 
 .cert__btn {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  margin-top: 0.7rem;
+  margin-top: 0.9rem;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--ink);
-  border-bottom: 1.5px solid var(--ink);
+  border-bottom: 1.5px solid var(--border);
   padding-bottom: 1px;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.cert__btn:hover {
-  color: var(--red);
-  border-color: var(--red);
+.cert__btn:hover { 
+  color: var(--red); 
+  border-color: var(--red); 
 }
 
 .cert__btn-arrow { 
@@ -447,7 +795,9 @@ const designCerts = [
 }
 
 @media (max-width: 768px) {
-  .portfolio__tab { font-size: 1.4rem; }
+  .portfolio__tab { 
+    font-size: 1.1rem; 
+  }
 
   .stack-container {
     flex-direction: column;
@@ -456,10 +806,10 @@ const designCerts = [
     padding: 0;
   }
 
-  .card { 
-    margin-left: 0; 
-    width: 100%; 
-    height: auto; 
+  .card {
+    margin-left: 0;
+    width: 100%;
+    height: auto;
   }
 
   .card__img { 
@@ -469,10 +819,21 @@ const designCerts = [
   .card:hover { 
     transform: translateY(-6px) rotate(0deg); 
   }
-
   .card:hover ~ .card,
   .stack-container:hover .card:not(:hover):has(~ .card:hover) { 
     transform: none; 
+  }
+
+  .modal__img { 
+    height: 200px; 
+  }
+
+  .modal__content { 
+    padding: 1.2rem 1.2rem 1.5rem; 
+  }
+  
+  .modal__title { 
+    font-size: 1.4rem; 
   }
 }
 
@@ -482,7 +843,7 @@ const designCerts = [
   }
 
   .portfolio__tab { 
-    font-size: 1.1rem; 
+    font-size: 0.95rem; 
   }
 
   .certs__grid { 
