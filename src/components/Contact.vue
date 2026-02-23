@@ -69,6 +69,7 @@
             </button>
           </div>
           <p v-if="sent" class="contact__success">✓ Message sent! I'll get back to you soon.</p>
+          <p v-if="error" class="contact__error">✗ Something went wrong. Please try again.</p>
         </div>
       </div>
 
@@ -79,19 +80,39 @@
 <script setup>
 import { ref } from 'vue'
 import { Mail, Phone, MapPin, Github, Linkedin, Instagram } from 'lucide-vue-next'
+import emailjs from '@emailjs/browser'
 
 const form = ref({ name: '', email: '', subject: '', message: '' })
 const sending = ref(false)
 const sent = ref(false)
+const error = ref(false)
 
-const sendMessage = () => {
+const sendMessage = async () => {
   if (!form.value.name || !form.value.email || !form.value.message) return
+
   sending.value = true
-  setTimeout(() => {
-    sending.value = false
+  sent.value = false
+  error.value = false
+
+  try {
+  await emailjs.send(
+    import.meta.env.VITE_EMAILJS_SERVICE_ID,
+    import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+    {
+      from_name: form.value.name,
+      from_email: form.value.email,
+      subject: form.value.subject,
+      message: form.value.message,
+    },
+    import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+  )
     sent.value = true
     form.value = { name: '', email: '', subject: '', message: '' }
-  }, 1500)
+  } catch (e) {
+    error.value = true
+  } finally {
+    sending.value = false
+  }
 }
 </script>
 
@@ -359,6 +380,15 @@ const sendMessage = () => {
   text-align: center;
   font-size: 0.85rem;
   color: var(--red);
+  font-weight: 600;
+  margin: 0;
+  animation: fadeUp 0.4s ease forwards;
+}
+
+.contact__error {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #e53e3e;
   font-weight: 600;
   margin: 0;
   animation: fadeUp 0.4s ease forwards;
