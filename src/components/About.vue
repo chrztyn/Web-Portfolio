@@ -135,7 +135,6 @@ const techStack = [
   font-weight: 600;
   letter-spacing: 0.10em;
   color: var(--red);
-  opacity: 0.5;
   margin: 0 0 0;
   text-transform: uppercase;
 }
