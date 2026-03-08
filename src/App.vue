@@ -17,6 +17,10 @@
     <Portfolio />
   </section>
 
+  <section id="beyond">
+    <Beyond />
+  </section>
+
   <section id="resume">
     <Resume/>
   </section>
@@ -34,6 +38,7 @@ import Hero from './components/Hero.vue'
 import About from './components/About.vue'
 import Skills from './components/Skills.vue'
 import Portfolio from './components/Portfolio.vue'
+import Beyond from './components/Beyond.vue'
 import Resume from './components/Resume.vue'
 import Contact from './components/Contact.vue'
 import Footer from './components/Footer.vue'
@@ -133,7 +138,7 @@ section.in-view .resume__entry {
 }
 
 body {
-  font-family: 'Satoshi-Variable', sans-serif;
+  font-family: 'Syne', sans-serif;
   background: var(--bg);
   color: var(--ink);
   transition: background 0.3s ease, color 0.3s ease;
@@ -165,12 +170,13 @@ section#portfolio {
 section#resume {
   padding: 2rem 0 5rem;
   min-height: auto;
+  margin-top: -2rem;
 }
 
 section#contact {
   padding: 0;
   min-height: auto;
-  margin-top: 2rem;
-  margin-bottom: 7rem;
+  margin-top: -4rem;
+  margin-bottom:1rem;
 }
 </style>

@@ -1,78 +1,94 @@
 <template>
-  <section class="hero" aria-label="Hero introduction">
-    <div class="hero__inner">
+  <section id="hero" aria-label="Hero introduction">
 
-      <div class="hero__row-top">
-        <h1 class="hero__hello">HELLO</h1>
-        <div class="hero__badge" role="note" aria-label="Job title: back end developer">
-          <span>back end</span>
-          <span>developer</span>
+    <canvas ref="canvasEl" class="hero-canvas" aria-hidden="true"></canvas>
+
+    <div class="hero-inner">
+
+      <div class="hero-left">
+
+        <div class="hero-eyebrow" ref="eyebrowEl">
+          <span class="eyebrow-line"></span>
+          <span>Backend Developer · HAU · Philippines</span>
         </div>
-      </div>
 
-      <div class="hero__row-mid" aria-hidden="false">
-        <span class="hero__im">I'M</span>
-        <span class="hero__asterisk" aria-hidden="true">✳</span>
-        <span class="hero__name">CHRISTINE</span>
-      </div>
-
-      <div class="hero__row-bottom">
-        <nav class="hero__cta" aria-label="Primary actions">
-          <a href="#contact" class="hero__link" aria-label="Contact Christine Mae Yunun">
-            <span class="hero__arrow" aria-hidden="true">↗</span>
-            <span>CONTACT ME</span>
-          </a>
-          <a href="#portfolio" class="hero__link" aria-label="View Christine's portfolio">
-            <span class="hero__arrow" aria-hidden="true">↗</span>
-            <span>MY PORTFOLIO</span>
-          </a>
-        </nav>
-
-        <div class="hero__bio">
-          <p>
-            Highly passionate backend web developer with experience in system architecture, 
-            database management, and RESTful API development. Skilled in building efficient, scalable, 
-            and maintainable applications. Eager to solve problems and apply technical expertise 
-            to real world projects.
-          </p>
-        </div>
-      </div>
-
-      <div class="hero__scroll" aria-hidden="true">
-        <span>SCROLL</span>
-        <div class="hero__scroll-line"></div>
-      </div>
-
-      <div class="hero__projects">
-        <p class="hero__projects-label">FEATURED PROJECTS</p>
-        <div class="hero__projects-grid">
-          <a
-            v-for="project in featuredProjects"
-            :key="project.title"
-            :href="project.link"
-            class="hero__project-card"
-          >
-            <div class="hero__project-img">
-              <img :src="project.image" :alt="project.title" />
+        <div class="hero-heading">
+          <div class="hero-hello-row" ref="helloEl">
+            <h1 class="hero-hello">Hello,</h1>
+            <div class="hero-badge">
+              <span>back end</span>
+              <span>developer</span>
             </div>
-            <div class="hero__project-info">
-              <span class="hero__project-tech">{{ project.tech }}</span>
-              <h3 class="hero__project-title">{{ project.title }}</h3>
-              <p class="hero__project-desc">{{ project.desc }}</p>
-            </div>
-            <span class="hero__project-arrow" aria-hidden="true">↗</span>
-          </a>
+          </div>
+          <div class="hero-name-row" ref="imEl">
+            <h1 class="hero-im">I'm <em>Christine.</em></h1>
+          </div>
         </div>
+
+        <p class="hero-bio" ref="bioEl">
+          Highly passionate backend web developer with experience in
+          <strong>system architecture, database management,</strong> and
+          <strong>RESTful API development.</strong>
+        </p>
+
+        <div class="hero-ctas" ref="ctasEl">
+          <a href="#contact" class="btn-primary">Contact Me <span aria-hidden="true">↗</span></a>
+          <a href="#portfolio" class="btn-ghost">View Work</a>
+        </div>
+
+        <div class="hero-hint" ref="hintEl">
+          <span class="hint-dot" aria-hidden="true"></span>
+          <span>Available for freelance &amp; full-time</span>
+        </div>
+
       </div>
+
+      <div class="hero-right-spacer" aria-hidden="true"></div>
 
     </div>
+
+    <div class="hero-projects" ref="projectsEl">
+      <p class="hero-projects-label">Featured Projects</p>
+      <div class="hero-projects-grid">
+        <a
+          v-for="project in featuredProjects"
+          :key="project.title"
+          :href="project.link"
+          class="hero-project-card"
+        >
+          <div class="hero-project-img">
+            <img :src="project.image" :alt="project.title" loading="lazy" />
+          </div>
+          <div class="hero-project-info">
+            <span class="hero-project-tech">{{ project.tech }}</span>
+            <h3 class="hero-project-title">{{ project.title }}</h3>
+            <p class="hero-project-desc">{{ project.desc }}</p>
+          </div>
+          <span class="hero-project-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+
   </section>
 </template>
 
 <script setup>
-import SplitSmart from '../assets/images/splitsmart.png'
+import { ref, onMounted, onUnmounted } from 'vue'
+import * as THREE from 'three'
+import SplitSmart  from '../assets/images/splitsmart.png'
 import NonTaMangan from '../assets/images/nontamangan.png'
-import Pelikula from '../assets/images/pelikula.png'
+import Pelikula    from '../assets/images/pelikula.png'
+
+const eyebrowEl  = ref(null)
+const helloEl    = ref(null)
+const imEl       = ref(null)
+const bioEl      = ref(null)
+const ctasEl     = ref(null)
+const hintEl     = ref(null)
+const projectsEl = ref(null)
+const canvasEl   = ref(null)
+
+let renderer, animId
 
 const featuredProjects = [
   {
@@ -97,468 +113,663 @@ const featuredProjects = [
     link: '#portfolio'
   },
 ]
+
+onMounted(() => {
+  const items = [
+    { el: eyebrowEl.value,  delay: 200  },
+    { el: helloEl.value,    delay: 400  },
+    { el: imEl.value,       delay: 560  },
+    { el: bioEl.value,      delay: 750  },
+    { el: ctasEl.value,     delay: 920  },
+    { el: hintEl.value,     delay: 1060 },
+    { el: projectsEl.value, delay: 1200 },
+  ]
+  items.forEach(({ el, delay }) => {
+    if (!el) return
+    setTimeout(() => el.classList.add('is-visible'), delay)
+  })
+  initThree()
+})
+
+onUnmounted(() => {
+  cancelAnimationFrame(animId)
+  renderer?.dispose()
+})
+
+function getBreakpoint() {
+  const w = window.innerWidth
+  if (w < 480) return 'xs'
+  if (w < 900) return 'sm'
+  return 'lg'
+}
+
+function initThree() {
+  const canvas = canvasEl.value
+  if (!canvas) return
+
+  const section = canvas.parentElement
+  let W = section.clientWidth
+  let H = section.clientHeight
+
+  const scene  = new THREE.Scene()
+  const camera = new THREE.PerspectiveCamera(32, W / H, 0.1, 100)
+  camera.position.set(0, 0, 13)
+
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
+  renderer.setSize(W, H)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  renderer.setClearColor(0x000000, 0)
+
+  scene.add(new THREE.AmbientLight(0xffffff, 2.5))
+  const dir = new THREE.DirectionalLight(0xffffff, 2.0)
+  dir.position.set(5, 7, 5)
+  scene.add(dir)
+  const redPt = new THREE.PointLight(0xffffff, 1.0, 12)
+  redPt.position.set(-3, 2, 3)
+  scene.add(redPt)
+
+  const matDark = new THREE.MeshStandardMaterial({ color: 0x181818, roughness: 0.5, metalness: 0.65 })
+  const matRed  = new THREE.MeshStandardMaterial({ color: 0xEC4D37, roughness: 0.4, metalness: 0.0 })
+  const matWire = new THREE.MeshBasicMaterial({ color: 0xEC4D37, wireframe: true, transparent: true, opacity: 0.12 })
+
+  const group = new THREE.Group()
+  scene.add(group)
+
+  function applyBreakpoint() {
+    const bp = getBreakpoint()
+    if (bp === 'xs') {
+      group.position.set(0, 0.5, 0)
+      group.scale.setScalar(0.36)
+    } else if (bp === 'sm') {
+      group.position.set(0, 0.8, 0)
+      group.scale.setScalar(0.44)
+    } else {
+      group.position.set(1.8, 1.2, 0)
+      group.scale.setScalar(0.88)
+    }
+    group.userData.baseY = group.position.y
+  }
+  applyBreakpoint()
+
+  const serverGroup = new THREE.Group()
+  const unitGeo     = new THREE.BoxGeometry(2.0, 0.34, 0.95)
+  const leds        = []
+
+  ;[-0.44, 0, 0.44].forEach((y, i) => {
+    const unit = new THREE.Mesh(unitGeo, i % 2 === 0 ? matDark : matRed)
+    unit.position.y = y
+    serverGroup.add(unit)
+
+    const led = new THREE.Mesh(
+      new THREE.SphereGeometry(0.05, 8, 8),
+      new THREE.MeshStandardMaterial({
+        color: i === 1 ? 0xffffff : 0x00ffaa,
+        emissive: i === 1 ? 0xffffff : 0x00ffaa,
+        emissiveIntensity: 1.2
+      })
+    )
+    led.position.set(0.78, y, 0.46)
+    led.userData.phase = i * 1.1
+    serverGroup.add(led)
+    leds.push(led)
+
+    for (let s = 0; s < 3; s++) {
+      const slot = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.09, 0.9), matDark)
+      slot.position.set(-0.55 + s * 0.2, y, 0.01)
+      serverGroup.add(slot)
+    }
+  })
+
+  serverGroup.add(new THREE.Mesh(new THREE.BoxGeometry(2.2, 1.45, 1.1), matWire))
+  group.add(serverGroup)
+
+  const cubies  = []
+  const cubeGeo = new THREE.BoxGeometry(0.22, 0.22, 0.22)
+  ;[
+    [-1.8,  1.4, 0.3, 0],
+    [ 1.8,  1.2, 0.2, 1],
+    [-1.6, -1.2, 0.5, 0],
+    [ 1.8, -0.9, 0.2, 1],
+    [-0.7,  1.9, 0.1, 0],
+    [ 0.8, -1.9, 0.4, 1],
+    [ 0.0,  2.0, 0.2, 0],
+    [-1.5, -0.3, 0.8, 1],
+  ].forEach(([x, y, z, t]) => {
+    const m = new THREE.Mesh(cubeGeo, t === 0 ? matRed.clone() : matDark.clone())
+    m.position.set(x, y, z)
+    m.userData = { oy: y, sp: 0.35 + Math.random() * 0.55, ph: Math.random() * Math.PI * 2 }
+    group.add(m)
+    cubies.push(m)
+  })
+
+  ;[
+    { r: 2.4, rx: Math.PI / 3, rz: 0,           speed:  0.20 },
+    { r: 2.4, rx: Math.PI / 2, rz: Math.PI / 4, speed: -0.14 },
+    { r: 1.6, rx: Math.PI / 6, rz: Math.PI / 3, speed:  0.28 },
+  ].forEach(({ r, rx, rz, speed }) => {
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(r, 0.011, 6, 90),
+      new THREE.MeshBasicMaterial({ color: 0xEC4D37, transparent: true, opacity: 0.13 })
+    )
+    ring.rotation.x = rx
+    ring.rotation.z = rz
+    ring.userData.speed = speed
+    group.add(ring)
+  })
+
+  const dotCount = 55
+  const dPos     = new Float32Array(dotCount * 3)
+  for (let i = 0; i < dotCount; i++) {
+    dPos[i * 3]     = (Math.random() - 0.5) * 6
+    dPos[i * 3 + 1] = (Math.random() - 0.5) * 5
+    dPos[i * 3 + 2] = (Math.random() - 0.5) * 3
+  }
+  const dotGeo = new THREE.BufferGeometry()
+  dotGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3))
+  group.add(new THREE.Points(dotGeo, new THREE.PointsMaterial({ color: 0xEC4D37, size: 0.04, transparent: true, opacity: 0.35 })))
+
+  let mx = 0, my = 0
+  const onMouse = e => {
+    mx = (e.clientX / window.innerWidth  - 0.5) * 2
+    my = (e.clientY / window.innerHeight - 0.5) * 2
+  }
+  window.addEventListener('mousemove', onMouse)
+
+  const onResize = () => {
+    W = section.clientWidth
+    H = section.clientHeight
+    renderer.setSize(W, H)
+    camera.aspect = W / H
+    camera.updateProjectionMatrix()
+    applyBreakpoint()
+  }
+  window.addEventListener('resize', onResize)
+
+  const clock = new THREE.Clock()
+  const animate = () => {
+    animId = requestAnimationFrame(animate)
+    const t  = clock.getElapsedTime()
+    const bp = getBreakpoint()
+
+    if (bp === 'lg') {
+      group.rotation.y += (mx * 0.18 - group.rotation.y) * 0.04
+      group.rotation.x += (-my * 0.10 - group.rotation.x) * 0.04
+    } else {
+      group.rotation.y += (0 - group.rotation.y) * 0.04
+      group.rotation.x += (0 - group.rotation.x) * 0.04
+    }
+
+    group.position.y = group.userData.baseY + Math.sin(t * 0.55) * 0.1
+
+    group.children.forEach(ch => {
+      if (ch.userData.speed !== undefined && ch.geometry?.type === 'TorusGeometry') {
+        ch.rotation.z += ch.userData.speed * 0.016
+      }
+    })
+
+    cubies.forEach(c => {
+      c.position.y = c.userData.oy + Math.sin(t * c.userData.sp + c.userData.ph) * 0.2
+      c.rotation.x = t * 0.45 * c.userData.sp
+      c.rotation.y = t * 0.65 * c.userData.sp
+    })
+
+    leds.forEach(l => {
+      l.material.emissiveIntensity = 0.6 + 0.7 * Math.sin(t * 2.8 + l.userData.phase)
+    })
+
+    renderer.render(scene, camera)
+  }
+  animate()
+}
 </script>
 
-<style>
-.hero {
-  font-family: 'Satoshi-Variable', sans-serif;
-  min-height: auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 2vh clamp(2rem, 8vw, 10rem);
-  padding-top: 0.5rem;
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+#hero {
   position: relative;
-  overflow: hidden;
-  overflow-x: hidden;
-  background: var(--bg);
-  transition: background 0.3s ease;
-    background: var(--bg);
-      min-height: 100vh;
-
-
-}
-
-.hero__inner {
-  width: 100%;
-  max-width: 1400px;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  justify-content: center;
+  background: var(--bg);
+  transition: background 0.4s;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-inner {
   position: relative;
   z-index: 1;
-  box-sizing: border-box;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  align-items: center;
+  gap: 0;
+  padding: 0 clamp(1.5rem, 5vw, 7rem);
 }
 
-.hero__row-top {
+.hero-right-spacer {
+  min-height: 520px;
+}
+
+.hero-left {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 1.5rem;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-right: 2rem;
 }
 
-.hero__hello {
-  font-family: 'Satoshi-Regular', sans-serif;
-  font-weight: 900;
-  color: var(--red);
-  font-size: clamp(5rem, 11vw, 13rem);
-  line-height: 0.85;
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.5rem, 0.8vw, 0.62rem);
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  margin: 0;
-  letter-spacing: -0.02em;
+  color: var(--ink3);
   opacity: 0;
-  animation: fadeUp 0.7s ease 0.1s forwards;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.hero-eyebrow.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.eyebrow-line {
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--red);
   flex-shrink: 0;
 }
 
-.hero__badge {
+.hero-heading {
   display: flex;
   flex-direction: column;
   gap: 0;
+  line-height: 1;
 }
 
-.hero__badge span {
+.hero-hello-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s ease, transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-hello-row.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-name-row {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s ease, transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-name-row.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-hello,
+.hero-im {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(3.2rem, 6vw, 7rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.hero-im em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--red);
+}
+
+.hero-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-self: flex-end;
+  margin-bottom: 0.6rem;
+  flex-shrink: 0;
+}
+
+.hero-badge span {
   display: inline-flex;
   align-items: center;
   background: var(--ink);
   color: var(--bg);
   width: max-content;
-  white-space: nowrap;
-  font-family: 'Satoshi-Regular';
+  font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
   text-transform: lowercase;
-  letter-spacing: -0.01em;
-  font-size: clamp(0.7rem, 2.5vw, 2.4rem);
-  padding: 0.4em 0.8em;
-  line-height: 1;
-  border-radius: 9999px;
-  margin: 0;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-              box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+  letter-spacing: 0.03em;
+  font-size: clamp(0.55rem, 0.85vw, 0.68rem);
+  padding: 0.35em 0.85em;
+  border-radius: 999px;
+  line-height: 1.3;
+  transition: background 0.3s, color 0.3s;
 }
 
-.hero__badge span:first-child {
-  transform: rotate(-6deg);
+.hero-badge span:first-child {
+  transform: rotate(-5deg);
+  align-self: flex-start;
+}
+
+.hero-badge span:last-child {
+  margin-top: -0.25em;
+  margin-left: 0.9em;
+}
+
+.hero-bio {
+  font-size: clamp(0.82rem, 1vw, 0.95rem);
+  line-height: 1.8;
+  color: var(--ink2);
+  max-width: 420px;
   opacity: 0;
-  animation: stackFirst 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
+  transform: translateY(16px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
 
-.hero__badge span:last-child {
-  margin-top: -0.35em;
-  margin-left: 1.5em;
-  opacity: 0;
-  animation: stackSecond 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s forwards;
+.hero-bio.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.hero__badge:hover span:first-child {
-  transform: rotate(-6deg) translateY(4px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-}
-
-.hero__badge:hover span:last-child {
-  transform: translateY(4px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-}
-
-.hero__row-mid {
-  display: flex;
-  align-items: center;
-  gap: clamp(0.3rem, 2vw, 1.5rem);
-  margin-top: 0;
-}
-
-.hero__im {
-  font-family: 'Satoshi-Regular', sans-serif;
-  font-weight: 900;
-  color: var(--red);
-  font-size: clamp(4rem, 9.5vw, 11rem);
-  line-height: 0.88;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  opacity: 0;
-  animation: fadeUp 0.7s ease 0.5s forwards;
-}
-
-.hero__asterisk {
-  color: var(--red);
-  font-size: clamp(2.5rem, 5vw, 5rem);
-  line-height: 1;
-  animation: spin 10s linear infinite;
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-.hero__name {
-  font-family: 'Satoshi-Regular', sans-serif;
-  font-weight: 900;
-  color: var(--red);
-  font-size: clamp(4rem, 9.5vw, 11rem);
-  line-height: 0.88;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  opacity: 0;
-  animation: fadeUp 0.7s ease 0.7s forwards;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.hero__row-bottom {
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  margin-top: 1rem;
-  gap: 6.5rem;
-  opacity: 0;
-  animation: fadeUp 0.7s ease 1s forwards;
-}
-
-.hero__cta {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-
-.hero__link {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--red);
-  font-size: clamp(0.8rem, 1.1vw, 1rem);
+.hero-bio strong {
+  color: var(--ink);
   font-weight: 700;
-  text-transform: uppercase;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.hero-ctas.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--red);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.56rem, 0.8vw, 0.68rem);
   letter-spacing: 0.1em;
+  text-transform: uppercase;
   text-decoration: none;
-  position: relative;
-  transition: opacity 0.18s;
+  padding: 0.78em 1.7em;
+  border-radius: 4px;
+  transition: background 0.2s, transform 0.2s;
 }
 
-.hero__link::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1.5px;
-  background: var(--red);
-  transition: width 0.3s ease;
+.btn-primary:hover {
+  background: #d93f2b;
+  transform: translateY(-2px);
 }
 
-.hero__link:hover::after { width: 100%; }
-
-.hero__arrow {
-  font-size: 1.3em;
-  line-height: 1;
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid var(--border2);
+  color: var(--ink2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.56rem, 0.8vw, 0.68rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.78em 1.7em;
+  border-radius: 4px;
+  transition: border-color 0.2s, color 0.2s;
 }
 
-.hero__bio {
-  max-width: 580px;
-  font-size: clamp(0.85rem, 1vw, 0.95rem);
-  line-height: 1.7;
+.btn-ghost:hover {
+  border-color: var(--ink);
   color: var(--ink);
-  flex: 1;
-  transition: color 0.3s ease;
 }
 
-.hero__bio p {
-  margin: 0;
-  text-align: justify;
-}
-
-.hero__scroll {
+.hero-hint {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  margin-top: 2rem;
-  opacity: 0;
-  animation: fadeUp 0.7s ease 1.3s forwards;
-}
-
-.hero__scroll span {
-  font-size: 0.65rem;
+  gap: 0.55rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.46rem, 0.65vw, 0.56rem);
   letter-spacing: 0.2em;
-  font-weight: 700;
-  color: var(--ink);
-  opacity: 0.35;
+  text-transform: uppercase;
+  color: var(--ink3);
+  opacity: 0;
+  transition: opacity 0.7s ease;
 }
 
-.hero__scroll-line {
-  width: 40px;
-  height: 1px;
-  background: var(--border);
-  position: relative;
-  overflow: hidden;
+.hero-hint.is-visible {
+  opacity: 1;
 }
 
-.hero__scroll-line::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
+.hint-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
   background: var(--red);
-  animation: scrollSlide 1.5s ease infinite;
+  flex-shrink: 0;
+  animation: blink 1.9s ease infinite;
 }
 
-@keyframes scrollSlide {
-  to { left: 100%; }
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.65);
+  }
 }
 
-.hero__projects {
-  margin-top: 4rem;
+.hero-projects {
+  position: relative;
+  z-index: 1;
+  padding: 2.5rem clamp(1.5rem, 5vw, 7rem) 3rem;
   opacity: 0;
-  animation: fadeUp 0.7s ease 1.2s forwards;
+  transform: translateY(16px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
 
-.hero__projects-label {
-  font-size: 0.78rem;
+.hero-projects.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-projects-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.48rem, 0.7vw, 0.58rem);
   font-weight: 700;
-  letter-spacing: 0.2em;
-  color: var(--ink);
-  opacity: 0.45;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink3);
   margin: 0 0 1.2rem;
 }
 
-.hero__projects-grid {
+.hero-projects-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
-.hero__project-card {
+.hero-project-card {
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
   overflow: hidden;
   text-decoration: none;
   color: var(--ink);
   background: var(--card);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background 0.3s ease;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s, background 0.3s;
 }
 
-.hero__project-card:hover {
+.hero-project-card:hover {
   border-color: var(--red);
   box-shadow: 0 4px 20px rgba(236, 77, 55, 0.12);
   transform: translateY(-4px);
 }
 
-.hero__project-img {
+.hero-project-img {
   width: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
 }
 
-.hero__project-img img {
+.hero-project-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  filter: grayscale(15%);
+  transition: transform 0.4s, filter 0.4s;
 }
 
-.hero__project-card:hover .hero__project-img img {
+.hero-project-card:hover .hero-project-img img {
   transform: scale(1.05);
+  filter: grayscale(0%);
 }
 
-.hero__project-info {
-  padding: 0.9rem 1rem;
+.hero-project-info {
+  padding: 0.85rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.25rem;
   flex: 1;
-  background: var(--card);
-  transition: background 0.3s ease;
 }
 
-.hero__project-tech {
-  font-size: 0.7rem;
+.hero-project-tech {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
   font-weight: 600;
   color: var(--red);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
-.hero__project-title {
-  font-size: 0.9rem;
+.hero-project-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--ink);
   margin: 0;
 }
 
-.hero__project-desc {
-  font-size: 0.75rem;
+.hero-project-desc {
+  font-size: 0.7rem;
   line-height: 1.5;
-  color: var(--ink);
-  opacity: 0.6;
+  color: var(--ink2);
   margin: 0;
 }
 
-.hero__project-arrow {
+.hero-project-arrow {
   position: absolute;
-  top: 0.7rem;
-  right: 0.8rem;
-  font-size: 1rem;
+  top: 0.65rem;
+  right: 0.75rem;
+  font-size: 0.9rem;
   color: var(--red);
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s;
 }
 
-.hero__project-card:hover .hero__project-arrow { 
-  opacity: 1; 
+.hero-project-card:hover .hero-project-arrow {
+  opacity: 1;
 }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes stackFirst {
-  from { opacity: 0; transform: rotate(-6deg) translateY(-50px); }
-  to   { opacity: 1; transform: rotate(-6deg) translateY(0); }
-}
-
-@keyframes stackSecond {
-  from { opacity: 0; transform: translateY(-50px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 768px) {
-  .hero { 
-    padding-left: 1.5rem; 
-    padding-right: 1.5rem; 
+@media (max-width: 900px) {
+  .hero-canvas {
+    display: none;
   }
-  
-  .hero__row-top { 
-    gap: 1.5rem; 
-    align-items: center; 
-    flex-wrap: wrap; 
+  .hero-inner {
+    grid-template-columns: 1fr;
+    padding: 0 1.5rem;
   }
-
-  .hero__badge span:last-child { 
-    margin-left: 0.8em; 
+  .hero-right-spacer {
+    display: none;
   }
-
-  .hero__row-bottom { 
-    flex-direction: column; 
-    align-items: flex-start; 
-    gap: 1.5rem; 
+  .hero-left {
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+    padding-right: 0;
+    gap: 1.4rem;
   }
-
-  .hero__bio { 
-    max-width: 100%; 
+  .hero-hello,
+  .hero-im {
+    white-space: normal;
   }
-
-  .hero__bio p { 
-    text-align: left; 
+  .hero-projects {
+    padding: 2rem 1.5rem;
   }
-
-  .hero__projects-grid { 
-    grid-template-columns: repeat(2, 1fr); 
+  .hero-projects-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 480px) {
-  .hero { 
-    padding: 1rem; 
-    padding-top: 0.5rem; 
-    overflow-x: hidden; 
+  .hero-inner {
+    padding: 0 1rem;
   }
-
-  .hero__hello { 
-    font-size: 3rem; 
-    flex-shrink: 0; 
+  .hero-left {
+    gap: 1.2rem;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
   }
-
-  .hero__im, .hero__name { 
-    font-size: 2.8rem; 
+  .hero-hello,
+  .hero-im {
+    font-size: clamp(2.4rem, 9vw, 3.5rem);
+    white-space: normal;
   }
-
-  .hero__asterisk { 
-    font-size: 1.6rem; 
+  .hero-badge span {
+    font-size: 0.58rem;
   }
-
-  .hero__badge span { 
-    font-size: 0.7rem; 
-    padding: 0.4em 0.8em; 
+  .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
   }
-
-  .hero__badge span:last-child { 
-    margin-left: 1em; 
+  .btn-primary,
+  .btn-ghost {
+    justify-content: center;
   }
-
-  .hero__row-top { 
-    flex-direction: row; 
-    align-items: flex-end; 
-    gap: 0.8rem; 
-    flex-wrap: nowrap; 
+  .hero-projects {
+    padding: 1.5rem 1rem;
   }
-
-  .hero__row-mid { 
-    gap: 0.3rem; 
-    flex-wrap: nowrap; 
-  }
-
-  .hero__row-bottom { 
-    flex-direction: column; 
-    align-items: flex-start; 
-    gap: 1.2rem; 
-    margin-top: 1.5rem; 
-  }
-
-  .hero__bio p { 
-    text-align: left; 
-    font-size: 0.88rem; 
-  }
-
-  .hero__projects-grid { 
-    grid-template-columns: 1fr; 
-  }
-
-  .hero__cta { 
-    flex-direction: column; 
-    gap: 0.8rem; 
+  .hero-projects-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

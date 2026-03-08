@@ -1,132 +1,95 @@
 <template>
-  <section class="portfolio" id="portfolio" aria-label="Portfolio">
-    <div class="portfolio__inner">
+  <section class="sec" id="work" aria-label="Selected Work">
 
-      <p class="portfolio__label">PORTFOLIO</p>
+    <div class="sec-label" ref="labelEl"><span>03 — Selected Work</span></div>
 
-      <div class="portfolio__tabs" role="tablist">
-        <button
-          class="portfolio__tab"
-          :class="{ active: activeTab === 'projects' }"
-          @click="activeTab = 'projects'"
-          role="tab"
-        >PROJECTS</button>
-        <button
-          class="portfolio__tab"
-          :class="{ active: activeTab === 'certifications' }"
-          @click="activeTab = 'certifications'"
-          role="tab"
-        >CERTIFICATIONS</button>
+    <div class="sec-title" ref="titleEl">
+      <div class="sec-title-inner">Things I've <em>Built.</em></div>
+    </div>
+
+    <div class="tab-row" ref="tabsEl">
+      <button class="stab" :class="{ on: activeTab === 'projects' }"       @click="setTab('projects')">Projects</button>
+      <button class="stab" :class="{ on: activeTab === 'certifications' }" @click="setTab('certifications')">Certifications</button>
+    </div>
+
+    <div v-show="activeTab === 'projects'">
+      <div class="proj-grid" ref="projGridEl">
+        <a
+          v-for="(p, i) in projects"
+          :key="p.title"
+          class="proj"
+          href="#"
+          @click.prevent="openModal(p)"
+        >
+          <div class="proj-idx">{{ String(i + 1).padStart(3,'0') }} / {{ p.year }}</div>
+          <div class="proj-img">
+            <img :src="p.image" :alt="p.title" />
+            <div class="proj-img-overlay"></div>
+          </div>
+          <div class="proj-pills">
+            <span class="proj-pill" v-for="tag in p.tags" :key="tag">{{ tag }}</span>
+          </div>
+          <div class="proj-title">{{ p.title }}</div>
+          <p   class="proj-desc">{{ p.description }}</p>
+          <div class="proj-foot">
+            <span class="proj-cta">View Details</span>
+            <span class="proj-arrow">↗</span>
+          </div>
+        </a>
       </div>
-      <hr class="portfolio__divider" />
+    </div>
 
-      <div v-if="activeTab === 'projects'" class="portfolio__projects">
-        <p class="portfolio__hint">click a card to view details</p>
-        <div class="stack-container">
-          <div
-            class="card"
-            v-for="(project, index) in projects"
-            :key="project.title"
-            :style="{ zIndex: projects.length - index }"
-            @click="openModal(project)"
-          >
-            <div class="card__img">
-              <img :src="project.image" :alt="project.title" />
-              <div class="card__img-overlay">
-                <span class="card__img-label">{{ project.tech }}</span>
-              </div>
+    <div v-show="activeTab === 'certifications'" ref="certsWrapEl">
+      <div class="certs-block">
+        <div class="sub-label">Technical &amp; Development</div>
+        <div class="sk-grid">
+          <div class="cert-card" v-for="c in techCerts" :key="c.title">
+            <div class="cert-card__bar"></div>
+            <div class="cert-card__head">
+              <span class="cert-card__badge">{{ c.issuer[0] }}</span>
+              <span class="cert-card__date">{{ c.date }}</span>
             </div>
-            <div class="card__body">
-              <p class="card__tech">{{ project.tech }}</p>
-              <h3 class="card__title">{{ project.title }}</h3>
-              <p class="card__desc">{{ project.description }}</p>
-              <span class="card__btn">
-                <span>View Details</span>
-                <span class="card__btn-arrow">↗</span>
-              </span>
-            </div>
+            <div class="cert-card__title">{{ c.title }}</div>
+            <div class="cert-card__issuer">{{ c.issuer }}</div>
+            <a :href="c.link" target="_blank" rel="noopener" class="cert-card__link">View Certificate <span>↗</span></a>
           </div>
         </div>
       </div>
-
-      <div v-if="activeTab === 'certifications'" class="portfolio__certs">
-
-        <div class="certs__section">
-          <div class="certs__section-header">
-            <span class="certs__section-line"></span>
-            <p class="certs__category-label">TECHNICAL &amp; DEVELOPMENT</p>
-          </div>
-          <div class="certs__grid">
-            <div class="cert__card" v-for="cert in techCerts" :key="cert.title">
-              <div class="cert__accent"></div>
-              <div class="cert__top">
-                <span class="cert__badge">{{ cert.issuer[0] }}</span>
-                <span class="cert__date">{{ cert.date }}</span>
-              </div>
-              <div class="cert__body">
-                <h3 class="cert__title">{{ cert.title }}</h3>
-                <p class="cert__issuer">{{ cert.issuer }}</p>
-                <a :href="cert.link" target="_blank" rel="noopener" class="cert__btn">
-                  <span>View Certificate</span>
-                  <span class="cert__btn-arrow">↗</span>
-                </a>
-              </div>
+      <div class="certs-block">
+        <div class="sub-label">Design / UX</div>
+        <div class="sk-grid">
+          <div class="cert-card" v-for="c in designCerts" :key="c.title">
+            <div class="cert-card__bar"></div>
+            <div class="cert-card__head">
+              <span class="cert-card__badge">{{ c.issuer[0] }}</span>
+              <span class="cert-card__date">{{ c.date }}</span>
             </div>
+            <div class="cert-card__title">{{ c.title }}</div>
+            <div class="cert-card__issuer">{{ c.issuer }}</div>
+            <a :href="c.link" target="_blank" rel="noopener" class="cert-card__link">View Certificate <span>↗</span></a>
           </div>
         </div>
-
-        <div class="certs__section">
-          <div class="certs__section-header">
-            <span class="certs__section-line"></span>
-            <p class="certs__category-label">DESIGN / UX</p>
-          </div>
-          <div class="certs__grid">
-            <div class="cert__card" v-for="cert in designCerts" :key="cert.title">
-              <div class="cert__accent"></div>
-              <div class="cert__top">
-                <span class="cert__badge">{{ cert.issuer[0] }}</span>
-                <span class="cert__date">{{ cert.date }}</span>
-              </div>
-              <div class="cert__body">
-                <h3 class="cert__title">{{ cert.title }}</h3>
-                <p class="cert__issuer">{{ cert.issuer }}</p>
-                <a :href="cert.link" target="_blank" rel="noopener" class="cert__btn">
-                  <span>View Certificate</span>
-                  <span class="cert__btn-arrow">↗</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
 
     <Teleport to="body">
       <Transition name="modal">
-        <div class="modal__overlay" v-if="selectedProject" @click.self="closeModal">
-          <div class="modal__box">
-            <button class="modal__close" @click="closeModal" aria-label="Close">✕</button>
-
-            <div class="modal__img">
-              <img :src="selectedProject.image" :alt="selectedProject.title" />
+        <div class="modal-overlay" v-if="selected" @click.self="closeModal">
+          <div class="modal-box">
+            <button class="modal-close" @click="closeModal" aria-label="Close">✕</button>
+            <div class="modal-img">
+              <img :src="selected.image" :alt="selected.title" />
             </div>
-
-            <div class="modal__content">
-              <p class="modal__tech">{{ selectedProject.tech }}</p>
-              <h2 class="modal__title">{{ selectedProject.title }}</h2>
-              <hr class="modal__divider" />
-
-              <div class="modal__section" v-for="(section, i) in selectedProject.details" :key="i">
-                <h4 class="modal__section-title">{{ section.heading }}</h4>
-                <p class="modal__section-text">{{ section.text }}</p>
+            <div class="modal-body">
+              <p class="modal-cat">{{ selected.tech }}</p>
+              <h2 class="modal-title">{{ selected.title }}</h2>
+              <hr class="modal-rule" />
+              <div class="modal-section" v-for="(s, i) in selected.details" :key="i">
+                <h4 class="modal-section-label">{{ s.heading }}</h4>
+                <p  class="modal-section-text">{{ s.text }}</p>
               </div>
-
-              <div class="modal__actions">
-                <a :href="selectedProject.link" class="modal__btn" target="_blank" rel="noopener">
-                  <span>View Project</span>
-                  <span>↗</span>
-                </a>
+              <div class="modal-actions">
+                <a :href="selected.link" class="btn-p" target="_blank" rel="noopener">View Project ↗</a>
               </div>
             </div>
           </div>
@@ -138,36 +101,96 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import SplitSmart from '../assets/images/splitsmart.png'
-import NonTaMangan from '../assets/images/nontamangan.png'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import SplitSmart   from '../assets/images/splitsmart.png'
+import NonTaMangan  from '../assets/images/nontamangan.png'
 import BuffsChicken from '../assets/images/buffschicken.png'
-import Pelikula from '../assets/images/pelikula.png'
+import Pelikula     from '../assets/images/pelikula.png'
 
-const activeTab = ref('projects')
-const selectedProject = ref(null)
+const activeTab   = ref('projects')
+const selected    = ref(null)
 
-const openModal = (project) => {
-  selectedProject.value = project
-  document.body.style.overflow = 'hidden'
+const labelEl     = ref(null)
+const titleEl     = ref(null)
+const tabsEl      = ref(null)
+const projGridEl  = ref(null)
+const certsWrapEl = ref(null)
+
+function fly(el, { x = 0, y = 0, delay = 0, dur = 800 } = {}) {
+  if (!el) return
+  el.style.opacity    = '0'
+  el.style.transform  = `translate(${x}px,${y}px)`
+  el.style.transition = 'none'
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      el.style.transition = `opacity ${dur}ms cubic-bezier(.16,1,.3,1) ${delay}ms, transform ${dur}ms cubic-bezier(.16,1,.3,1) ${delay}ms`
+      el.style.opacity    = '1'
+      el.style.transform  = 'translate(0,0)'
+    })
+  })
 }
 
-const closeModal = () => {
-  selectedProject.value = null
-  document.body.style.overflow = ''
+function animateCards() {
+  nextTick(() => {
+    projGridEl.value?.querySelectorAll('.proj').forEach((card, i) => {
+      fly(card, { x: i % 2 === 0 ? -60 : 60, delay: i * 80, dur: 900 })
+    })
+  })
 }
 
-const handleKey = (e) => {
-  if (e.key === 'Escape') closeModal()
+function animateCerts() {
+  nextTick(() => {
+    certsWrapEl.value?.querySelectorAll('.cert-card').forEach((el, i) => {
+      fly(el, { y: 25, delay: i * 55, dur: 600 })
+    })
+  })
 }
 
-onMounted(() => window.addEventListener('keydown', handleKey))
-onUnmounted(() => window.removeEventListener('keydown', handleKey))
+function setTab(tab) {
+  activeTab.value = tab
+  nextTick(() => {
+    if (tab === 'projects') animateCards()
+    else                    animateCerts()
+  })
+}
+
+const openModal  = p  => { selected.value = p;   document.body.style.overflow = 'hidden' }
+const closeModal = () => { selected.value = null; document.body.style.overflow = '' }
+const onKey      = e  => { if (e.key === 'Escape') closeModal() }
+
+onMounted(() => {
+  window.addEventListener('keydown', onKey)
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(({ target, isIntersecting }) => {
+      if (!isIntersecting) return
+      io.unobserve(target)
+      if (target === labelEl.value)  fly(target, { x: -40, dur: 800 })
+      if (target === titleEl.value)  fly(target, { y: 40, dur: 1000, delay: 60 })
+      if (target === tabsEl.value) {
+        fly(target, { y: 20, dur: 700, delay: 140 })
+        animateCards()
+      }
+    })
+  }, { threshold: 0.05 })
+
+  nextTick(() => {
+    ;[labelEl, titleEl, tabsEl].forEach(r => {
+      if (!r.value) return
+      r.value.style.opacity = '0'
+      io.observe(r.value)
+    })
+  })
+})
+
+onUnmounted(() => window.removeEventListener('keydown', onKey))
 
 const projects = [
   {
     title: 'SplitSmart',
+    year: '2025',
     tech: 'Node.js · Express.js · MongoDB',
+    tags: ['Node.js', 'Express.js', 'MongoDB'],
     description: 'A web app that automates group expense tracking with RESTful APIs, secure authentication, and full CRUD operations.',
     image: SplitSmart,
     link: '#',
@@ -184,11 +207,13 @@ const projects = [
         heading: 'Collaboration & Process',
         text: 'Working within an agile workflow, I collaborated closely with teammates to iteratively refine features, maintain clear communication through regular standups, and deliver a reliable solution on schedule.'
       },
-    ]
+    ],
   },
   {
     title: 'Non Ta Mangan',
+    year: '2025',
     tech: 'PHP · MySQL · JavaScript',
+    tags: ['PHP', 'MySQL', 'JavaScript'],
     description: 'A restaurant picker and rating web app with a spin-the-wheel feature, rating system, and user account management.',
     image: NonTaMangan,
     link: '#',
@@ -205,11 +230,13 @@ const projects = [
         heading: 'Collaboration & Process',
         text: 'Following agile practices within a team, I contributed to feature planning, iterative development, and QA to ensure a fully functional and user-friendly application at delivery.'
       },
-    ]
+    ],
   },
   {
     title: 'Pelikula',
+    year: '2024',
     tech: 'HTML · CSS · JavaScript',
+    tags: ['HTML', 'CSS', 'JavaScript'],
     description: 'A static web prototype for browsing, rating, and reviewing movies with a focus on UI consistency and responsive layout.',
     image: Pelikula,
     link: '#',
@@ -226,11 +253,13 @@ const projects = [
         heading: 'Key Focus',
         text: 'This project prioritized front-end fundamentals — semantic HTML structure, well-organized CSS, and accessible design patterns — to create an intuitive and smooth user experience.'
       },
-    ]
+    ],
   },
   {
     title: 'BuffsChicken',
+    year: '2025',
     tech: 'Vue · Nuxt · Express.js',
+    tags: ['Vue', 'Nuxt', 'Express.js'],
     description: 'An SEO-focused e-commerce website for a chicken brand built with Nuxt for server-side rendering and Express.js backend.',
     image: BuffsChicken,
     link: '#',
@@ -247,256 +276,351 @@ const projects = [
         heading: 'Technical Highlights',
         text: 'The SSR setup with Nuxt significantly improved SEO scores compared to a traditional SPA approach. I also structured the Express.js API with clean RESTful conventions, making it easy to extend for future features like promotions or loyalty programs.'
       },
-    ]
+    ],
   },
 ]
 
 const techCerts = [
-  { title: 'Back-End Development and APIs', issuer: 'FreeCodeCamp', date: 'Oct 2025', link: 'https://drive.google.com/file/d/15wPQCdqs3RsGfXA4OPokfTBLY1oWzeEx/view' },
+  { title: 'Back-End Development and APIs',                    issuer: 'FreeCodeCamp', date: 'Oct 2025', link: 'https://drive.google.com/file/d/15wPQCdqs3RsGfXA4OPokfTBLY1oWzeEx/view' },
   { title: 'Legacy JavaScript Algorithms and Data Structures', issuer: 'FreeCodeCamp', date: 'Sep 2025', link: 'https://drive.google.com/file/d/1bwpne5Gk3jfvX6dk-6YxRZXVC4HUuACn/view' },
-  { title: 'JavaScript Essentials', issuer: 'Cisco', date: 'Oct 2024', link: 'https://www.credly.com/badges/7721bc03-5d6b-4fe9-bbaf-29adc9ec8c39/public_url' },
-  { title: 'CompTIA IT Fundamentals+ (ITF+)', issuer: 'CompTIA', date: 'Nov 2023', link: 'https://drive.google.com/file/d/1hjG3ss4832kyTWZx_V365_mP-ndKwfe7/view' },
+  { title: 'JavaScript Essentials',                            issuer: 'Cisco',        date: 'Oct 2024', link: 'https://www.credly.com/badges/7721bc03-5d6b-4fe9-bbaf-29adc9ec8c39/public_url' },
+  { title: 'CompTIA IT Fundamentals+ (ITF+)',                  issuer: 'CompTIA',      date: 'Nov 2023', link: 'https://drive.google.com/file/d/1hjG3ss4832kyTWZx_V365_mP-ndKwfe7/view' },
 ]
 
 const designCerts = [
-  { title: 'Design Thinking for Beginners', issuer: 'Simplilearn', date: 'Jul 2025', link: 'https://drive.google.com/file/d/1HVL7HlnaBg6HvyOeWNJWL2evEIiDN1P-/view' },
-  { title: 'Introduction to Graphic Design & Basics of UI/UX', issuer: 'Simplilearn', date: 'Aug 2025', link: 'https://drive.google.com/file/d/1UM49Lpav0jepMQ2xGJjtMF3xKLyovx_A/view' },
-  { title: 'Legacy Responsive Design', issuer: 'FreeCodeCamp', date: 'Sept 2024', link: 'https://drive.google.com/file/d/1zzUSYnzWwdoUiIhWrqc6xW8EZP5izH9T/view' },
+  { title: 'Design Thinking for Beginners',                    issuer: 'Simplilearn',  date: 'Jul 2025', link: 'https://drive.google.com/file/d/1HVL7HlnaBg6HvyOeWNJWL2evEIiDN1P-/view' },
+  { title: 'Introduction to Graphic Design & Basics of UI/UX', issuer: 'Simplilearn',  date: 'Aug 2025', link: 'https://drive.google.com/file/d/1UM49Lpav0jepMQ2xGJjtMF3xKLyovx_A/view' },
+  { title: 'Legacy Responsive Design',                         issuer: 'FreeCodeCamp', date: 'Sep 2024', link: 'https://drive.google.com/file/d/1zzUSYnzWwdoUiIhWrqc6xW8EZP5izH9T/view' },
 ]
 </script>
 
 <style scoped>
-.portfolio {
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+.sec {
+  position: relative;
+  z-index: 2;
+  padding: 9rem clamp(2rem, 5vw, 5rem);
+  border-bottom: 1px solid var(--border);
   background: var(--bg);
-  min-height: 100vh;
-  padding: 4rem 0 5rem;
-  transition: background 0.3s ease;
+  transition: background .4s, color .4s;
 }
 
-.portfolio__inner {
-  width: 100%;
-  padding-left: clamp(2rem, 5vw, 5rem);
-  padding-right: clamp(2rem, 5vw, 5rem);
-}
-
-.portfolio__label {
-  font-size: 2.5rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+.sec-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .22em;
   color: var(--red);
-  margin: 0 0 1.5rem;
-  font-family: 'Satoshi-Variable', sans-serif;
-}
-
-.portfolio__tabs {
-  display: flex;
-  gap: 2.5rem;
-  align-items: center;
-}
-
-.portfolio__tab {
-  background: none;
-  border: none;
-  font-family: 'Satoshi-Variable', sans-serif;
-  font-size: 1.3rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: var(--ink);
-  opacity: 0.35;
-  cursor: pointer;
-  padding: 0 0 0.5rem;
-  border-bottom: 2px solid transparent;
-  transition: all 0.25s ease;
-}
-
-.portfolio__tab.active {
-  opacity: 1;
-  color: var(--red);
-  border-bottom: 2px solid var(--red);
-}
-
-.portfolio__tab:hover {
-  opacity: 0.7;
-  transform: translateY(-2px);
-}
-
-.portfolio__divider {
-  border: none;
-  border-top: 1.5px solid var(--border);
-  margin: 0 0 1.5rem;
-  transition: border-color 0.3s ease;
-}
-
-.portfolio__hint {
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  color: var(--ink);
-  opacity: 0.4;
   text-transform: uppercase;
-  text-align: center;
-  margin: 0 0 1.5rem;
-}
-
-.portfolio__projects {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.stack-container {
   display: flex;
   align-items: center;
-  position: relative;
-  height: 480px;
-  padding: 0 1rem;
+  gap: .7rem;
+  margin-bottom: 1.6rem;
 }
-
-.card {
-  position: relative;
-  width: 300px;
-  height: 440px;
-  margin-left: -160px;
-  border-radius: 16px;
-  background: var(--card);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  transition: transform 0.4s cubic-bezier(0.34, 1.2, 0.64, 1),
-              box-shadow 0.4s ease, background 0.3s ease;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+.sec-label::after {
+  content: '';
+  width: 36px;
+  height: 1px;
+  background: rgba(236,77,55,.3);
   flex-shrink: 0;
+}
+
+.sec-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.2rem, 4.2vw, 4.8rem);
+  letter-spacing: -.035em;
+  line-height: 1.05;
+  color: var(--ink);
+  overflow: hidden;
+  margin: 0 0 3rem;
+}
+.sec-title-inner {
+  display: block;
+}
+.sec-title em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--red);
+}
+
+.tab-row {
+  display: flex;
+  gap: .35rem;
+  margin-bottom: 2.5rem;
+}
+.stab {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .36em 1.1em;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--ink2);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.stab.on,
+.stab:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+
+.proj-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.proj {
+  background: var(--bg);
+  padding: 2.5rem;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+  transition: background .3s;
   cursor: pointer;
 }
-
-.card:first-child { margin-left: 0; }
-
-.card:hover {
-  transform: translateY(-16px) rotate(-1deg);
-  z-index: 10 !important;
-  box-shadow: 0 28px 56px rgba(0, 0, 0, 0.22), 0 0 0 1.5px var(--red);
+.proj:hover {
+  background: var(--bg2);
 }
 
-.card:hover ~ .card { transform: translateX(160px); }
-
-.stack-container:hover .card:not(:hover):has(~ .card:hover) {
-  transform: translateX(-30px);
+.proj-idx {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .53rem;
+  color: var(--ink3);
+  margin-bottom: 1.1rem;
 }
 
-.card__img {
-  width: calc(100% - 2rem);
-  height: 170px;
-  margin: 1rem auto 0;
-  border-radius: 8px;
+.proj-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   position: relative;
+  margin-bottom: 1.4rem;
 }
-
-.card__img img {
+.proj-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top;
-  transition: transform 0.5s ease, filter 0.4s ease;
+  filter: grayscale(15%);
+  transition: transform .55s ease, filter .45s ease;
 }
-
-.card:hover .card__img img {
-  transform: scale(1.07);
-  filter: brightness(0.85);
+.proj:hover .proj-img img {
+  transform: scale(1.05);
+  filter: grayscale(0%);
 }
-
-.card__img-overlay {
+.proj-img-overlay {
   position: absolute;
-  bottom: 0.5rem;
-  left: 0.5rem;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.26) 0%, transparent 55%);
+  pointer-events: none;
 }
 
-.card__img-label {
-  background: rgba(236, 77, 55, 0.9);
-  color: #fff;
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  padding: 0.25em 0.7em;
-  border-radius: 9999px;
-}
-
-.card__body {
-  padding: 1rem 1.2rem;
+.proj-pills {
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  flex: 1;
+  flex-wrap: wrap;
+  gap: .3rem;
+  margin-bottom: .8rem;
 }
-
-.card__tech {
-  font-size: 0.65rem;
-  font-weight: 600;
+.proj-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .52rem;
+  letter-spacing: .06em;
   color: var(--red);
-  letter-spacing: 0.05em;
-  margin: 0;
+  border: 1px solid rgba(236,77,55,.3);
+  padding: .18em .6em;
+  border-radius: 2px;
+  transition: background .2s, color .2s;
 }
-
-.card__title {
-  font-family: 'Satoshi-Variable', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin: 0;
-  transition: color 0.2s ease;
-}
-
-.card:hover .card__title { color: var(--red); }
-
-.card__desc {
-  font-size: 0.72rem;
-  line-height: 1.55;
-  color: var(--ink);
-  opacity: 0.65;
-  margin: 0;
-  flex: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.card__btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: var(--ink);
-  color: var(--bg);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: 0.45rem 1rem;
-  border-radius: 999px;
-  align-self: flex-start;
-  transition: background 0.2s ease, gap 0.2s ease, color 0.2s ease;
-  cursor: pointer;
-}
-
-.card:hover .card__btn {
+.proj:hover .proj-pill {
   background: var(--red);
   color: #fff;
-  gap: 0.6rem;
 }
 
-.card__btn-arrow { 
-  transition: transform 0.2s ease; 
+.proj-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: .45rem;
+  transition: color .2s;
+}
+.proj:hover .proj-title {
+  color: var(--red);
 }
 
-.card:hover .card__btn-arrow { 
-  transform: translate(2px, -2px); 
+.proj-desc {
+  font-size: .76rem;
+  line-height: 1.68;
+  color: var(--ink2);
+  margin: 0 0 1.4rem;
 }
 
-.modal__overlay {
+.proj-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+.proj-cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  transition: color .2s;
+}
+.proj:hover .proj-cta {
+  color: var(--ink);
+}
+.proj-arrow {
+  font-size: 1rem;
+  color: var(--red);
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: all .22s;
+}
+.proj:hover .proj-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.certs-block {
+  margin-bottom: 2.8rem;
+}
+
+.sub-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem;
+  color: var(--red);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin-bottom: 1.3rem;
+  margin-top: 2.3rem;
+}
+.sub-label::after {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: rgba(236,77,55,.3);
+}
+
+.sk-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.cert-card {
+  background: var(--bg2);
+  padding: 1.6rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  position: relative;
+  overflow: hidden;
+  transition: background .25s;
+  cursor: default;
+}
+.cert-card:hover {
+  background: var(--bg3);
+}
+
+.cert-card__bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: var(--red);
+  transition: height .3s;
+}
+.cert-card:hover .cert-card__bar {
+  height: 2px;
+}
+
+.cert-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .55rem;
+}
+.cert-card__badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  background: var(--red);
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-size: .85rem;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+.cert-card__date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem;
+  color: var(--ink3);
+}
+
+.cert-card__title {
+  font-family: 'Syne', sans-serif;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.35;
+  transition: color .2s;
+}
+.cert-card:hover .cert-card__title {
+  color: var(--red);
+}
+
+.cert-card__issuer {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem;
+  color: var(--ink3);
+  margin-top: .1rem;
+}
+
+.cert-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  margin-top: auto;
+  padding-top: .75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink2);
+  border-top: 1px solid var(--border);
+  transition: color .2s;
+}
+.cert-card__link:hover {
+  color: var(--red);
+}
+
+.modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0,0,0,.6);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   z-index: 9999;
@@ -505,349 +629,147 @@ const designCerts = [
   justify-content: center;
   padding: 1.5rem;
 }
-
-.modal__box {
-  position: relative; 
+.modal-box {
+  position: relative;
   background: var(--bg);
-  border-radius: 20px;
+  border: 1px solid var(--border2);
+  border-radius: 4px;
   width: 100%;
   max-width: 680px;
   max-height: 88vh;
   overflow-y: auto;
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
-  border: 1.5px solid var(--border);
+  box-shadow: 0 32px 80px var(--shadow);
 }
-
-.modal__close {
+.modal-close {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  float: none;
-  margin: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,.45);
   border: none;
   color: #fff;
   width: 32px;
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: .8rem;
   display: grid;
   place-items: center;
-  transition: background 0.2s;
   z-index: 2;
+  transition: background .2s;
 }
-
-.modal__close:hover {
+.modal-close:hover {
   background: var(--red);
 }
 
-
-.modal__img {
+.modal-img {
   width: 100%;
   height: 220px;
   overflow: hidden;
-  border-radius: 20px 20px 0 0;
-  margin-top: 0;  
 }
-
-.modal__img img {
+.modal-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top;
 }
 
-.modal__content {
+.modal-body {
   padding: 1.8rem 2rem 2rem;
 }
 
-.modal__tech {
-  font-size: 0.72rem;
+.modal-cat {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem;
   font-weight: 700;
   color: var(--red);
-  letter-spacing: 0.08em;
-  margin: 0 0 0.4rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin: 0 0 .4rem;
 }
-
-.modal__title {
-  font-family: 'Satoshi-Variable', sans-serif;
+.modal-title {
+  font-family: 'Syne', sans-serif;
   font-size: 1.8rem;
-  font-weight: 900;
+  font-weight: 800;
   color: var(--ink);
   margin: 0 0 1rem;
-  letter-spacing: -0.01em;
+  letter-spacing: -.02em;
 }
-
-.modal__divider {
+.modal-rule {
   border: none;
-  border-top: 1.5px solid var(--border);
+  border-top: 1px solid var(--border);
   margin: 0 0 1.5rem;
 }
 
-.modal__section {
+.modal-section {
   margin-bottom: 1.2rem;
 }
-
-.modal__section-title {
-  font-size: 0.72rem;
+.modal-section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--red);
-  margin: 0 0 0.4rem;
+  margin: 0 0 .4rem;
 }
-
-.modal__section-text {
-  font-size: 0.9rem;
-  line-height: 1.7;
-  color: var(--ink);
-  opacity: 0.8;
+.modal-section-text {
+  font-size: .88rem;
+  line-height: 1.72;
+  color: var(--ink2);
   margin: 0;
 }
 
-.modal__actions {
+.modal-actions {
   margin-top: 1.5rem;
-  display: flex;
-  gap: 0.8rem;
 }
 
-.modal__btn {
+.btn-p {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: var(--ink);
-  color: var(--bg);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: 0.7rem 1.8rem;
-  border-radius: 999px;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.modal__btn:hover {
+  gap: .4rem;
   background: var(--red);
   color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: .68em 1.5em;
+  border-radius: 3px;
+  transition: all .2s;
+}
+.btn-p:hover {
+  background: var(--red2, #ff6b52);
+  transform: translateY(-2px);
 }
 
 .modal-enter-active,
 .modal-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity .3s ease;
 }
-.modal-enter-active .modal__box,
-.modal-leave-active .modal__box {
-  transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.3s ease;
+.modal-enter-active .modal-box,
+.modal-leave-active .modal-box {
+  transition: transform .3s cubic-bezier(.34,1.2,.64,1), opacity .3s ease;
 }
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
 }
-.modal-enter-from .modal__box,
-.modal-leave-to .modal__box {
-  transform: scale(0.92) translateY(20px);
+.modal-enter-from .modal-box,
+.modal-leave-to .modal-box {
+  transform: scale(.92) translateY(20px);
   opacity: 0;
 }
 
-.certs__section {
-  margin-bottom: 2.5rem;
+@media (max-width: 1024px) {
+  .proj-grid { grid-template-columns: 1fr; }
+  .sk-grid   { grid-template-columns: repeat(2, 1fr); }
 }
-
-.certs__section-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.2rem;
-}
-
-.certs__section-line {
-  display: block;
-  width: 40px;
-  height: 2px;
-  background: var(--red);
-  flex-shrink: 0;
-}
-
-.certs__category-label {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: var(--ink);
-  opacity: 0.6;
-  margin: 0;
-  text-transform: uppercase;
-}
-
-.certs__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
-}
-
-.cert__card {
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 1.2rem;
-  position: relative;
-  overflow: hidden;
-  background: var(--bg);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, background 0.3s ease;
-}
-
-.cert__card:hover {
-  border-color: var(--red);
-  box-shadow: 0 4px 20px rgba(236, 77, 55, 0.12);
-  transform: translateY(-3px);
-}
-
-.cert__accent {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3px;
-  height: 0%;
-  background: var(--red);
-  transition: height 0.3s ease;
-}
-
-.cert__card:hover .cert__accent { 
-  height: 100%; 
-}
-
-.cert__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.8rem;
-}
-
-.cert__badge {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: var(--red);
-  color: #fff;
-  font-size: 0.85rem;
-  font-weight: 800;
-  display: grid;
-  place-items: center;
-  font-family: 'Satoshi-Variable', sans-serif;
-}
-
-.cert__date {
-  font-size: 0.7rem;
-  color: var(--ink);
-  opacity: 0.45;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-}
-
-.cert__title {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin: 0 0 0.3rem;
-  line-height: 1.4;
-  transition: color 0.2s ease;
-}
-
-.cert__card:hover .cert__title { 
-  color: var(--red); 
-}
-
-.cert__issuer {
-  font-size: 0.75rem;
-  color: var(--ink);
-  opacity: 0.5;
-  margin: 0;
-  font-weight: 500;
-}
-
-.cert__btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  margin-top: 0.9rem;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--ink);
-  border-bottom: 1.5px solid var(--border);
-  padding-bottom: 1px;
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
-
-.cert__btn:hover { 
-  color: var(--red); 
-  border-color: var(--red); 
-}
-
-.cert__btn-arrow { 
-  transition: transform 0.2s ease; 
-}
-
-.cert__btn:hover .cert__btn-arrow { 
-  transform: translate(2px, -2px); 
-}
-
 @media (max-width: 768px) {
-  .portfolio__tab { 
-    font-size: 1.1rem; 
-  }
-
-  .stack-container {
-    flex-direction: column;
-    height: auto;
-    gap: 1rem;
-    padding: 0;
-  }
-
-  .card {
-    margin-left: 0;
-    width: 100%;
-    height: auto;
-  }
-
-  .card__img { 
-    height: 180px; 
-  }
-
-  .card:hover { 
-    transform: translateY(-6px) rotate(0deg); 
-  }
-  .card:hover ~ .card,
-  .stack-container:hover .card:not(:hover):has(~ .card:hover) { 
-    transform: none; 
-  }
-
-  .modal__img { 
-    height: 200px; 
-  }
-
-  .modal__content { 
-    padding: 1.2rem 1.2rem 1.5rem; 
-  }
-  
-  .modal__title { 
-    font-size: 1.4rem; 
-  }
+  .sec     { padding: 5.5rem 1.5rem; }
+  .sk-grid { grid-template-columns: repeat(2, 1fr); }
 }
-
 @media (max-width: 480px) {
-  .portfolio__tabs { 
-    gap: 1.2rem; 
-  }
-
-  .portfolio__tab { 
-    font-size: 0.95rem; 
-  }
-
-  .certs__grid { 
-    grid-template-columns: 1fr; 
-  }
+  .sk-grid { grid-template-columns: 1fr; }
 }
 </style>

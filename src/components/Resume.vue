@@ -2,7 +2,11 @@
   <section class="resume" id="resume" aria-label="Resume">
     <div class="resume__inner">
 
-      <p class="resume__label">RESUME</p>
+      <p class="resume__label"><span>05 — Resume</span></p>
+
+      <div class="resume__title">
+        My <em>Credentials,</em><br>On Paper.
+      </div>
 
       <div class="resume__summary">
         <p>Highly passionate backend-focused web development student with experience in system logic, database management, and RESTful APIs. Eager to build efficient, scalable applications and apply technical skills to real-world projects.</p>
@@ -102,48 +106,75 @@ const experiences = [
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
 .resume {
-  background: var(--bg-alt);
-  min-height: 100vh;
-  padding: 4rem 0 5rem;
-  transition: background 0.3s ease;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.4s, color 0.4s;
 }
 
 .resume__inner {
-  width: 100%;
-  padding-left: clamp(2rem, 5vw, 5rem);
-  padding-right: clamp(2rem, 5vw, 5rem);
+  padding: 9rem clamp(2rem, 5vw, 5rem);
 }
 
+
+
 .resume__label {
-  font-size: 2.5rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
   color: var(--red);
-  margin: 0 0 1.5rem;
-  font-family: 'Satoshi-Variable', sans-serif;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0 0 1.6rem;
+}
+.resume__label::after {
+  content: '';
+  width: 36px;
+  height: 1px;
+  background: rgba(236, 77, 55, 0.3);
+  flex-shrink: 0;
+}
+
+.resume__title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.2rem, 4.2vw, 4.8rem);
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 2.5rem;
+}
+.resume__title em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--red);
 }
 
 .resume__summary {
-  border-left: 4px solid var(--red);
-  padding: 1rem 1.5rem;
+  border-left: 3px solid var(--red);
+  padding: 0.9rem 1.3rem;
   background: var(--card);
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 4px 4px 0;
   margin-bottom: 2.5rem;
   max-width: 680px;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .resume__summary:hover {
   border-left-color: var(--ink);
-  background: var(--card-dark);
 }
 
 .resume__summary p {
-  font-size: 0.9rem;
-  line-height: 1.75;
-  color: var(--ink);
-  opacity: 0.8;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.78;
+  color: var(--ink2);
   margin: 0;
 }
 
@@ -169,42 +200,27 @@ const experiences = [
 .resume__section-header {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
+  gap: 1rem;
 }
 
 .resume__line {
   display: block;
-  width: 50px;
-  height: 3px;
-  background: var(--border);
+  width: 36px;
+  height: 1px;
+  background: rgba(236, 77, 55, 0.3);
   flex-shrink: 0;
 }
 
 .resume__section-title {
-  font-family: 'Satoshi-Variable', sans-serif;
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--red);
   margin: 0;
-  letter-spacing: 0.02em;
-  position: relative;
-  padding-bottom: 0.4rem;
   cursor: default;
-  transition: color 0.3s ease;
 }
-
-.resume__section-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 40px;
-  height: 3px;
-  background: var(--red);
-  transition: width 0.3s ease;
-}
-
-.resume__section-title:hover::after { width: 100%; }
 
 .resume__entry {
   display: flex;
@@ -229,21 +245,23 @@ const experiences = [
   transition: transform 0.2s ease;
 }
 
-.resume__entry:hover { 
-  transform: translateX(6px); border-left-color: var(--red); 
+.resume__entry:hover {
+  transform: translateX(6px);
+  border-left-color: var(--red);
 }
 
-.resume__entry:hover::before { 
-  transform: scale(1.5); 
+.resume__entry:hover::before {
+  transform: scale(1.5);
 }
 
 .resume__date {
   display: inline-block;
   background: var(--red);
   color: #fff;
-  font-size: 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
   font-weight: 700;
-  padding: 0.2rem 0.7rem;
+  padding: 0.18em 0.68em;
   border-radius: 999px;
   letter-spacing: 0.08em;
   width: fit-content;
@@ -251,37 +269,37 @@ const experiences = [
   transition: background 0.2s ease;
 }
 
-.resume__entry:hover .resume__date { 
-  background: var(--ink); 
-  color: var(--bg-alt);
+.resume__entry:hover .resume__date {
+  background: var(--ink);
+  color: var(--bg);
 }
 
 .resume__degree {
-  font-size: 0.88rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--ink);
   margin: 0;
-  letter-spacing: 0.02em;
   transition: color 0.2s ease;
 }
 
-.resume__entry:hover .resume__degree { 
-  color: var(--red); 
+.resume__entry:hover .resume__degree {
+  color: var(--red);
 }
 
 .resume__school {
-  font-size: 0.85rem;
-  color: var(--ink);
-  opacity: 0.7;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--ink2);
   margin: 0;
 }
 
 .resume__detail {
-  font-size: 0.82rem;
-  color: var(--ink);
-  opacity: 0.65;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ink3);
   margin: 0.2rem 0 0;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .resume__list {
@@ -293,10 +311,10 @@ const experiences = [
 }
 
 .resume__list li {
-  font-size: 0.83rem;
-  line-height: 1.55;
-  color: var(--ink);
-  opacity: 0.75;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  color: var(--ink3);
 }
 
 .resume__right {
@@ -311,14 +329,13 @@ const experiences = [
 .resume__preview {
   width: 100%;
   aspect-ratio: 3/4;
-  border-radius: 8px;
   overflow: hidden;
-  position: relative;
+  border: 1px solid var(--border);
   transition: box-shadow 0.3s ease;
 }
 
 .resume__preview:hover {
-  box-shadow: 0 0 25px 10px rgba(236, 77, 55, 0.35);
+  box-shadow: 0 0 30px rgba(236, 77, 55, 0.22);
 }
 
 .resume__img {
@@ -329,28 +346,31 @@ const experiences = [
   transition: filter 0.3s ease;
 }
 
-.resume__preview:hover .resume__img { 
-  filter: blur(0px); 
+.resume__preview:hover .resume__img {
+  filter: blur(0);
 }
 
 .resume__download {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: var(--border);
-  color: var(--ink);
-  font-family: 'Satoshi-Variable', sans-serif;
-  font-size: 0.85rem;
+  gap: 0.45rem;
+  border: 1px solid var(--border2);
+  color: var(--ink2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   text-decoration: none;
-  padding: 0.8rem 3rem;
+  padding: 0.7em 2.3em;
   border-radius: 999px;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-.resume__download:hover { 
-  background: var(--red); color: #fff; 
+.resume__download:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
 }
 
 .resume__download-arrow {
@@ -358,17 +378,23 @@ const experiences = [
   transition: transform 0.2s ease;
 }
 
-.resume__download:hover .resume__download-arrow { 
-  transform: translateY(3px); 
+.resume__download:hover .resume__download-arrow {
+  transform: translateY(3px);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .resume__grid {
-     grid-template-columns: 1fr; 
-    }
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+  .resume__right {
+    position: static;
+  }
+}
 
-  .resume__right { 
-    position: static; 
+@media (max-width: 768px) {
+  .resume {
+    padding: 5.5rem 1.5rem;
   }
 }
 </style>

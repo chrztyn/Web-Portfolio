@@ -9,10 +9,10 @@ import { Github, Linkedin } from 'lucide-vue-next'
     </div>
 
     <div class="footer-links">
-      <a href="#home">HOME</a>
-      <a href="#about">ABOUT</a>
-      <a href="#portfolio">PORTFOLIO</a>
-      <a href="#contact">CONTACT</a>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#contact">Contact</a>
     </div>
 
     <div class="footer-socials">
@@ -26,34 +26,55 @@ import { Github, Linkedin } from 'lucide-vue-next'
   </footer>
 </template>
 
-
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
 .footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 30px clamp(2rem, 6vw, 8rem);
+  padding: 2rem clamp(2rem, 5vw, 5rem);
   background: var(--bg);
-  border-top: 1px solid var(--ink);
-  font-size: 14px;
-  color: var(--ink);
-  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  border-top: 1px solid var(--border);
+  transition: background 0.4s, color 0.4s;
+}
+
+.footer-left {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--ink3);
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
 }
 
 .footer-links a {
-  margin: 0 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   text-decoration: none;
-  color: var(--ink);
-  transition: color 0.2s ease;
+  color: var(--ink3);
+  transition: color 0.2s;
 }
 
 .footer-links a:hover {
   color: var(--red);
 }
 
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .footer-socials a {
-  color: var(--ink);
-  transition: color 0.2s ease;
+  color: var(--ink3);
+  transition: color 0.2s;
 }
 
 .footer-socials a:hover {
@@ -61,31 +82,26 @@ import { Github, Linkedin } from 'lucide-vue-next'
 }
 
 .icon {
-  width: 22px;
-  height: 22px;
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 
 @media (max-width: 768px) {
   .footer {
     flex-direction: column;
-    gap: 1.2rem;
-    padding: 24px 1.5rem;
+    gap: 1.5rem;
+    padding: 2rem 1.5rem;
     text-align: center;
   }
 
   .footer-links {
-    display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.5rem;
-  }
-
-  .footer-links a {
-    margin: 0;
+    gap: 1rem;
   }
 
   .footer-socials {
-    display: flex;
     gap: 1rem;
   }
 }

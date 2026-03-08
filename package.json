@@ -11,7 +11,9 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@unhead/vue": "^1.11.6",
+    "gsap": "^3.14.2",
     "lucide-vue-next": "^0.575.0",
+    "three": "^0.183.2",
     "vue": "^3.5.25"
   },
   "devDependencies": {

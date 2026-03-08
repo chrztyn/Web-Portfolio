@@ -3,11 +3,14 @@
     <div class="contact__inner">
 
       <div class="contact__left">
-        <h2 class="contact__heading">CONNECT<br />WITH ME</h2>
+
+        <p class="contact__label"><span>06 — Contact</span></p>
+
+        <h2 class="contact__heading">Connect <em>With Me.</em></h2>
 
         <p class="contact__subtext">
           Have a project in mind or a question? Reach out and let's
-          turn your <strong>ideas into reality.</strong>
+          turn your ideas into reality.
         </p>
 
         <ul class="contact__info" aria-label="Contact information">
@@ -95,17 +98,17 @@ const sendMessage = async () => {
   error.value = false
 
   try {
-  await emailjs.send(
-    import.meta.env.VITE_EMAILJS_SERVICE_ID,
-    import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-    {
-      from_name: form.value.name,
-      from_email: form.value.email,
-      subject: form.value.subject,
-      message: form.value.message,
-    },
-    import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-  )
+    await emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      {
+        from_name: form.value.name,
+        from_email: form.value.email,
+        subject: form.value.subject,
+        message: form.value.message,
+      },
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    )
     sent.value = true
     form.value = { name: '', email: '', subject: '', message: '' }
   } catch (e) {
@@ -117,16 +120,15 @@ const sendMessage = async () => {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
 .contact {
   background: var(--bg);
-  padding: 4rem 0 5rem;
-  transition: background 0.3s ease;
+  transition: background 0.4s, color 0.4s;
 }
 
 .contact__inner {
-  width: 100%;
-  padding-left: clamp(2rem, 5vw, 5rem);
-  padding-right: clamp(2rem, 5vw, 5rem);
+  padding: 9rem clamp(2rem, 5vw, 5rem);
   display: grid;
   grid-template-columns: 1fr 1.4fr;
   gap: 5rem;
@@ -134,39 +136,46 @@ const sendMessage = async () => {
   box-sizing: border-box;
 }
 
-.contact__heading {
-  font-family: 'Satoshi-Variable', sans-serif;
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 900;
-  color: var(--ink);
-  line-height: 1;
-  margin: 0 0 1.5rem;
-  letter-spacing: -0.01em;
-  position: relative;
-  display: inline-block;
-  transition: color 0.3s ease;
+.contact__label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  color: var(--red);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0 0 1.6rem;
 }
-
-.contact__heading::after {
+.contact__label::after {
   content: '';
-  position: absolute;
-  bottom: -6px;
-  left: 0;
-  width: 0%;
-  height: 3px;
-  background: var(--red);
-  transition: width 0.5s ease;
+  width: 36px;
+  height: 1px;
+  background: rgba(236, 77, 55, 0.3);
+  flex-shrink: 0;
 }
 
-.contact__left:hover .contact__heading::after { 
-  width: 100%; 
+.contact__heading {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.2rem, 4.2vw, 4.8rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 1.5rem;
+}
+.contact__heading em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--red);
 }
 
 .contact__subtext {
-  font-size: 0.95rem;
-  line-height: 1.65;
-  color: var(--ink);
-  opacity: 0.75;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.78;
+  color: var(--ink2);
   margin: 0 0 2rem;
   max-width: 320px;
 }
@@ -177,17 +186,16 @@ const sendMessage = async () => {
   margin: 0 0 2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.5rem;
 }
 
 .contact__info li {
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  padding: 0.7rem 0.9rem;
-  border-radius: 10px;
-  border: 1.5px solid transparent;
-  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid transparent;
+  transition: border-color 0.25s, background 0.25s, transform 0.25s;
   cursor: default;
 }
 
@@ -200,12 +208,11 @@ const sendMessage = async () => {
 .contact__info-icon {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
   background: var(--card);
   flex-shrink: 0;
-  transition: background 0.25s ease;
+  transition: background 0.25s;
 }
 
 .contact__info li:hover .contact__info-icon { background: var(--red); }
@@ -213,43 +220,36 @@ const sendMessage = async () => {
 
 .contact__info a,
 .contact__info span {
-  font-size: 0.9rem;
-  color: var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--ink2);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 0.2s;
 }
-
-.contact__info a {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
 .contact__info a:hover { color: var(--red); }
 
 .contact__icon {
-  width: 16px;
-  height: 16px;
-  color: var(--ink);
-  transition: color 0.2s ease;
+  width: 15px;
+  height: 15px;
+  color: var(--ink2);
+  transition: color 0.2s;
   flex-shrink: 0;
 }
 
 .contact__socials {
   display: flex;
-  gap: 0.8rem;
+  gap: 0.5rem;
   align-items: center;
 }
 
 .contact__socials a {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  border: 1.5px solid var(--border);
-  color: var(--ink);
-  transition: color 0.25s ease, border-color 0.25s ease,
-              background 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border2);
+  color: var(--ink2);
+  transition: color 0.25s, border-color 0.25s, background 0.25s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .contact__socials a:hover {
@@ -259,25 +259,24 @@ const sendMessage = async () => {
   transform: translateY(-4px);
 }
 
-.contact__social-icon { 
-  width: 18px; 
-  height: 18px; 
+.contact__social-icon {
+  width: 16px;
+  height: 16px;
 }
 
 .contact__form-wrap {
   background: var(--card);
-  border-radius: 16px;
+  border: 1px solid var(--border);
   padding: 2rem 2.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  border: 1.5px solid transparent;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .contact__form-wrap:focus-within {
-  border-color: var(--border);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  border-color: var(--border2);
+  box-shadow: 0 8px 32px var(--shadow);
 }
 
 .contact__field {
@@ -287,54 +286,49 @@ const sendMessage = async () => {
 }
 
 .contact__field label {
-  font-size: 0.72rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--ink);
-  opacity: 0.6;
-  transition: opacity 0.2s ease, color 0.2s ease;
+  letter-spacing: 0.18em;
+  color: var(--ink3);
+  text-transform: uppercase;
+  transition: color 0.2s;
 }
 
 .contact__field:focus-within label {
-   opacity: 1; 
-   color: var(--red); 
-  }
+  color: var(--red);
+}
 
 .contact__field input,
 .contact__field textarea {
   width: 100%;
-  background: var(--card-dark);
-  border: 1.5px solid transparent;
-  border-radius: 8px;
-  padding: 0.85rem 1rem;
-  font-family: 'Satoshi-Variable', sans-serif;
-  font-size: 0.9rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
   color: var(--ink);
   outline: none;
   resize: none;
-  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
 }
 
 .contact__field input::placeholder,
 .contact__field textarea::placeholder {
-  color: var(--ink);
-  opacity: 0.35;
+  color: var(--ink3);
+  opacity: 0.6;
 }
-
-.contact__field input:hover,
-.contact__field textarea:hover { background: var(--border); }
 
 .contact__field input:focus,
 .contact__field textarea:focus {
-  background: var(--card-dark);
   border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(236, 77, 55, 0.12);
+  box-shadow: 0 0 0 3px rgba(236, 77, 55, 0.1);
 }
 
 .contact__submit-wrap {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   margin-top: 0.5rem;
 }
 
@@ -342,54 +336,53 @@ const sendMessage = async () => {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--ink);
-  color: var(--bg);
+  background: var(--red);
+  color: #fff;
   border: none;
-  font-family: 'Satoshi-Variable', sans-serif;
-  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
-  padding: 0.85rem 3rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.75rem 2rem;
   border-radius: 999px;
   cursor: pointer;
-  transition: background 0.25s ease, color 0.25s ease,
-              transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), gap 0.2s ease;
+  transition: background 0.2s, transform 0.2s, gap 0.2s;
 }
 
 .contact__btn:hover:not(:disabled) {
-  background: var(--red);
-  color: #fff;
+  background: var(--red2, #ff6b52);
   transform: translateY(-2px);
   gap: 0.8rem;
 }
 
-.contact__btn:disabled { 
-  opacity: 0.6; 
-  cursor: not-allowed; 
+.contact__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.contact__btn-arrow { 
-  transition: transform 0.2s ease; 
+.contact__btn-arrow {
+  transition: transform 0.2s;
 }
 
-.contact__btn:hover .contact__btn-arrow { 
-  transform: translate(2px, -2px); 
+.contact__btn:hover .contact__btn-arrow {
+  transform: translate(2px, -2px);
 }
 
 .contact__success {
-  text-align: center;
-  font-size: 0.85rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
   color: var(--red);
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
   animation: fadeUp 0.4s ease forwards;
 }
 
 .contact__error {
-  text-align: center;
-  font-size: 0.85rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
   color: #e53e3e;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
   animation: fadeUp 0.4s ease forwards;
 }
@@ -399,46 +392,32 @@ const sendMessage = async () => {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 900px) {
-  .contact__inner { 
-    grid-template-columns: 1fr; 
-    gap: 3rem; 
+@media (max-width: 1024px) {
+  .contact__inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
   }
-
-  .contact__subtext { 
-    max-width: 100%; 
+  .contact__subtext {
+    max-width: 100%;
   }
 }
 
 @media (max-width: 768px) {
   .contact__inner {
-     padding-left: 1.5rem; 
-     padding-right: 1.5rem; 
-    }
-  .contact__form-wrap { 
-    padding: 1.5rem; 
+    padding: 5.5rem 1.5rem;
+  }
+  .contact__form-wrap {
+    padding: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .contact__inner { 
-    padding-left: 1rem; 
-    padding-right: 1rem; 
-    gap: 2rem; 
+  .contact__form-wrap {
+    padding: 1.2rem 1rem;
   }
-
-  .contact__heading { 
-    font-size: 2.5rem;
-   }
-
-  .contact__form-wrap { 
-    padding: 1.2rem 1rem; 
-  }
-
-  .contact__btn { 
-    width: 100%; 
-    justify-content: center; 
-    padding: 0.85rem 1rem; 
+  .contact__btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 </style>

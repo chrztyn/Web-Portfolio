@@ -48,3 +48,17 @@
     color: var(--ink);
     transition: background 0.3s ease, color 0.3s ease;
   }
+  
+  #hero {
+    margin-top: -5rem;
+  }
+
+   #skills {
+    margin-bottom: -3rem;
+  }
+
+  #about {
+    margin-bottom: -10rem;
+  }
+
+
