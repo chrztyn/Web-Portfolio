@@ -89,7 +89,20 @@
                 <p  class="modal-section-text">{{ s.text }}</p>
               </div>
               <div class="modal-actions">
-                <a :href="selected.link" class="btn-p" target="_blank" rel="noopener">View Project ↗</a>
+                <a
+                  v-if="selected.link"
+                  :href="selected.link"
+                  class="btn-p"
+                  target="_blank"
+                  rel="noopener"
+                >View Live Site ↗</a>
+                <a
+                  v-if="selected.github"
+                  :href="selected.github"
+                  class="btn-s"
+                  target="_blank"
+                  rel="noopener"
+                >GitHub Repo ↗</a>
               </div>
             </div>
           </div>
@@ -102,10 +115,11 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
-import SplitSmart   from '../assets/images/splitsmart.png'
-import NonTaMangan  from '../assets/images/nontamangan.png'
-import BuffsChicken from '../assets/images/buffschicken.png'
-import Pelikula     from '../assets/images/pelikula.png'
+import SplitSmart      from '../assets/images/splitsmart.png'
+import SplitSmartApp   from '../assets/images/splitsmart-app.png'   
+import NonTaMangan     from '../assets/images/nontamangan.png'
+import BuffsChicken    from '../assets/images/buffschicken.png'
+import Pelikula        from '../assets/images/pelikula.png'
 
 const activeTab   = ref('projects')
 const selected    = ref(null)
@@ -193,7 +207,8 @@ const projects = [
     tags: ['Node.js', 'Express.js', 'MongoDB'],
     description: 'A web app that automates group expense tracking with RESTful APIs, secure authentication, and full CRUD operations.',
     image: SplitSmart,
-    link: '#',
+    link: null,
+    github: 'https://github.com/chrztyn/6WCSERVER-Final-Project.git',
     details: [
       {
         heading: 'Overview',
@@ -216,7 +231,8 @@ const projects = [
     tags: ['PHP', 'MySQL', 'JavaScript'],
     description: 'A restaurant picker and rating web app with a spin-the-wheel feature, rating system, and user account management.',
     image: NonTaMangan,
-    link: '#',
+    link: 'http://nontamangan.mywebcommunity.org/',
+    github: null,
     details: [
       {
         heading: 'Overview',
@@ -239,7 +255,8 @@ const projects = [
     tags: ['HTML', 'CSS', 'JavaScript'],
     description: 'A static web prototype for browsing, rating, and reviewing movies with a focus on UI consistency and responsive layout.',
     image: Pelikula,
-    link: '#',
+    link: null,
+    github: 'https://github.com/chrztyn/pelikula.git',
     details: [
       {
         heading: 'Overview',
@@ -262,7 +279,8 @@ const projects = [
     tags: ['Vue', 'Nuxt', 'Express.js'],
     description: 'An SEO-focused e-commerce website for a chicken brand built with Nuxt for server-side rendering and Express.js backend.',
     image: BuffsChicken,
-    link: '#',
+    link: 'https://buffschicken.com',
+    github: 'https://github.com/chrztyn/Buffs-Chicken-Website.git',
     details: [
       {
         heading: 'Overview',
@@ -275,6 +293,30 @@ const projects = [
       {
         heading: 'Technical Highlights',
         text: 'The SSR setup with Nuxt significantly improved SEO scores compared to a traditional SPA approach. I also structured the Express.js API with clean RESTful conventions, making it easy to extend for future features like promotions or loyalty programs.'
+      },
+    ],
+  },
+  {
+    title: 'SplitSmart App',
+    year: '2025',
+    tech: 'Flutter · Dart · Supabase',
+    tags: ['Flutter', 'Dart', 'Supabase'],
+    description: 'A cross-platform mobile app for group expense splitting built with Flutter and Supabase — handling backend architecture and frontend integration.',
+    image: SplitSmartApp,
+    link: null,
+    github: 'https://github.com/chrztyn/6ADET-SplitSmart-App.git',
+    details: [
+      {
+        heading: 'Overview',
+        text: 'SplitSmart App is a cross-platform mobile application for group expense tracking, built with Flutter and Dart for a smooth native experience on both iOS and Android, backed by Supabase for real-time data and authentication.'
+      },
+      {
+        heading: 'My Role',
+        text: 'I handled the backend architecture using Supabase — designing the database schema, setting up row-level security policies, and configuring authentication flows. I also bridged the backend and frontend by integrating Supabase services directly into the Flutter app, ensuring seamless real-time data sync, secure user sessions, and reliable API calls across the full stack.'
+      },
+      {
+        heading: 'Key Focus',
+        text: 'The focus was on end-to-end ownership of the data layer — from structuring Supabase tables and policies to wiring them up in the Flutter UI — delivering a cohesive and production-ready mobile experience.'
       },
     ],
   },
@@ -378,6 +420,11 @@ const designCerts = [
   border: 1px solid var(--border);
 }
 
+.proj-grid::after {
+  content: '';
+  background: var(--bg);
+}
+
 .proj {
   background: var(--bg);
   padding: 2.5rem;
@@ -389,6 +436,7 @@ const designCerts = [
   transition: background .3s;
   cursor: pointer;
 }
+
 .proj:hover {
   background: var(--bg2);
 }
@@ -721,6 +769,9 @@ const designCerts = [
 
 .modal-actions {
   margin-top: 1.5rem;
+  display: flex;
+  gap: .7rem;
+  flex-wrap: wrap;
 }
 
 .btn-p {
@@ -740,6 +791,28 @@ const designCerts = [
 }
 .btn-p:hover {
   background: var(--red2, #ff6b52);
+  transform: translateY(-2px);
+}
+
+.btn-s {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--border2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: .68em 1.5em;
+  border-radius: 3px;
+  transition: all .2s;
+}
+.btn-s:hover {
+  border-color: var(--red);
+  color: var(--red);
   transform: translateY(-2px);
 }
 

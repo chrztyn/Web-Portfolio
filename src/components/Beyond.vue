@@ -20,14 +20,6 @@
       <div class="beyond__masonry" ref="masonryEl">
 
         <div class="beyond__pm-item">
-          <img src="../assets/images/beyond1.jpg" alt="Running for student office" />
-          <div class="beyond__pm-overlay">
-            <div class="beyond__pm-title">Running for Student Office</div>
-            <div class="beyond__pm-desc">Ran for SOC Councilor — and made it on the ballot.</div>
-          </div>
-        </div>
-
-        <div class="beyond__pm-item">
           <img src="../assets/images/beyond2.jpg" alt="Tree planting outreach" />
           <div class="beyond__pm-overlay">
             <div class="beyond__pm-title">Tree Planting</div>
@@ -92,41 +84,50 @@
         </div>
 
         <div class="beyond__bottom-row" ref="proseEl">
-          <div class="beyond__pm-item beyond__pm-item--last">
-            <img src="../assets/images/beyond10.png" alt="Student events" />
-            <div class="beyond__pm-overlay">
-              <div class="beyond__pm-title">University Days</div>
-              <div class="beyond__pm-desc">Showed up, had fun, and still got stuff done.</div>
-            </div>
-          </div>
-
           <div class="beyond__prose">
             <div class="beyond__prose-tag">Soft Skills & Leadership</div>
+
             <p>
               I'm not just a developer who sits behind a screen. As
-              <strong>Vice President of Code Geeks</strong>, I helped plan our club's
-              direction, ran workshops, and looked after members who were just starting
-              out — which honestly taught me more about communication than any class did.
+              <strong>Vice President of Code Geeks</strong>, I helped shape the club's direction,
+              organized technical workshops, and supported members who were just beginning their
+              journey in programming. Working closely with them taught me the value of clear
+              communication, patience, and mentorship.
             </p>
+
             <p>
-              As <strong>Chief Relations Officer of AWS Cloud Club HAU</strong>, I handled
-              partnerships and external communications — learned fast that professional
-              writing and knowing how to talk to people are real skills worth having.
+              As <strong>Chief Relations Officer of AWS Cloud Club HAU</strong>, I managed
+              partnerships and handled external communications. This role strengthened my
+              professional writing, networking, and relationship-building skills, and showed me
+              how important effective communication is when working with organizations and
+              industry partners.
             </p>
+
             <p>
               Through the <strong>HAU SOC Student Council</strong> and
-              <strong>GDG on Campus HAU</strong>, I helped coordinate events from start
-              to finish — logistics, people, timelines, all of it. It gets stressful,
-              but I've gotten good at keeping things together under pressure.
+              <strong>GDG on Campus HAU</strong>, I helped coordinate events from planning to
+              execution — managing logistics, timelines, and team coordination. These experiences
+              helped me develop strong organization skills and the ability to stay calm and keep
+              things moving forward even in high-pressure situations.
             </p>
-            <ul class="beyond__skills-list">
-              <li><span>Leadership & Team Management</span></li>
-              <li><span>Stakeholder Communication</span></li>
-              <li><span>Event Planning & Execution</span></li>
-              <li><span>Mentorship & Knowledge Sharing</span></li>
-              <li><span>Strategic Partnerships</span></li>
-              <li><span>Cross-functional Collaboration</span></li>
-            </ul>
+
+            <div class="beyond__skills-section">
+              <div class="beyond__skills-label">
+                <span class="beyond__skills-label-line"></span>
+                <span>Skills Gained</span>
+              </div>
+              <div class="beyond__discs">
+                <div
+                  class="beyond__disc"
+                  v-for="(skill, i) in softSkills"
+                  :key="skill"
+                  :style="{ animationDelay: `${i * 0.08}s` }"
+                >
+                  <span>{{ skill }}</span>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -144,6 +145,17 @@ const titleEl   = ref(null)
 const introEl   = ref(null)
 const masonryEl = ref(null)
 const proseEl   = ref(null)
+
+const softSkills = [
+  'Leadership',
+  'Attention to Detail',
+  'Communication',
+  'Collaboration',
+  'Mentorship',
+  'Problem-solving',
+  'Time Management',
+  'Adaptability',
+]
 
 onMounted(() => {
   const observer = new IntersectionObserver(
@@ -252,7 +264,7 @@ onMounted(() => {
 .beyond__masonry {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto;
+  grid-template-rows: auto auto;
   gap: 0.75rem;
   margin-bottom: 4rem;
   opacity: 0;
@@ -278,8 +290,6 @@ onMounted(() => {
 .beyond__masonry.is-visible .beyond__pm-item:nth-child(6) { animation-delay: 0.40s; }
 .beyond__masonry.is-visible .beyond__pm-item:nth-child(7) { animation-delay: 0.48s; }
 .beyond__masonry.is-visible .beyond__pm-item:nth-child(8) { animation-delay: 0.56s; }
-.beyond__masonry.is-visible .beyond__pm-item:nth-child(9) { animation-delay: 0.64s; }
-.beyond__masonry.is-visible .beyond__pm-item--last { animation-delay: 0.72s; }
 
 @keyframes pmIn {
   from {
@@ -295,9 +305,8 @@ onMounted(() => {
 .beyond__bottom-row {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 1fr 1.8fr;
+  grid-template-columns: 1fr;
   gap: 0.75rem;
-  align-items: stretch;
 }
 
 .beyond__pm-item {
@@ -306,53 +315,6 @@ onMounted(() => {
   border: 1px solid var(--border2);
   cursor: default;
   aspect-ratio: 4 / 3;
-}
-
-.beyond__pm-item:nth-child(1) {
-  grid-row: span 2;
-  aspect-ratio: unset;
-}
-
-.beyond__pm-item:nth-child(1) img {
-  height: 100%;
-  min-height: 280px;
-}
-
-.beyond__pm-item:nth-child(4) {
-  grid-row: span 2;
-  aspect-ratio: unset;
-}
-
-.beyond__pm-item:nth-child(4) img {
-  height: 100%;
-  min-height: 280px;
-}
-
-.beyond__pm-item:nth-child(7) {
-  aspect-ratio: 4 / 3;
-}
-
-.beyond__pm-item:nth-child(7) img {
-  height: 100%;
-}
-
-.beyond__pm-item:nth-child(8) {
-  aspect-ratio: 4 / 3;
-}
-
-.beyond__pm-item:nth-child(8) img {
-  height: 100%;
-}
-
-.beyond__pm-item:nth-child(9) {
-  grid-column: span 2;
-  aspect-ratio: 16 / 7;
-}
-
-.beyond__pm-item--last {
-  aspect-ratio: 4 / 5;
-  height: auto;
-  min-height: 0;
 }
 
 .beyond__pm-item img {
@@ -407,6 +369,7 @@ onMounted(() => {
   border: 1px solid var(--border2);
   background: var(--bg2);
   justify-content: center;
+  min-width: 0;
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s;
@@ -415,7 +378,7 @@ onMounted(() => {
 .beyond__masonry.is-visible .beyond__prose {
   opacity: 1;
   transform: translateY(0);
-  transition-delay: 0.78s;
+  transition-delay: 0.6s;
 }
 
 .beyond__prose-tag {
@@ -449,81 +412,138 @@ onMounted(() => {
   font-weight: 700;
 }
 
-.beyond__skills-list {
-  list-style: none;
-  margin: 0.4rem 0 0;
-  padding: 0;
+.beyond__skills-section {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
 }
 
-.beyond__skills-list li span {
-  display: inline-block;
+.beyond__skills-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.06em;
-  color: var(--ink2);
+  font-size: 0.52rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.beyond__skills-label-line {
+  display: inline-block;
+  width: 16px;
+  height: 1px;
+  background: var(--red);
+  flex-shrink: 0;
+}
+
+.beyond__discs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.beyond__disc {
+  border-radius: 10px;
   border: 1px solid var(--border2);
-  padding: 0.28rem 0.7rem;
-  border-radius: 999px;
-  transition: border-color 0.25s, color 0.25s;
+  background: transparent;
+  padding: 0.65rem 1.3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  animation: discIn 0.5s ease both;
+  transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
 }
 
-.beyond__skills-list li span:hover {
+.beyond__disc:hover {
+  background: var(--red);
   border-color: var(--red);
-  color: var(--red);
+  box-shadow: 0 6px 20px rgba(236, 77, 55, 0.28);
+  transform: translateY(-2px);
 }
 
-@media (max-width: 900px) {
+.beyond__disc span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: var(--ink2);
+  white-space: nowrap;
+  transition: color 0.25s;
+}
+
+.beyond__disc:hover span {
+  color: #fff;
+}
+
+@keyframes discIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
   .beyond__masonry {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
-  .beyond__pm-item:nth-child(1),
-  .beyond__pm-item:nth-child(4) {
-    grid-row: auto;
-    aspect-ratio: 4 / 3;
-  }
-  .beyond__pm-item:nth-child(1) img,
-  .beyond__pm-item:nth-child(4) img {
-    min-height: auto;
-  }
-  .beyond__pm-item:nth-child(9) {
-    grid-column: auto;
-    aspect-ratio: 4 / 3;
-  }
-  .beyond__bottom-row {
-    grid-template-columns: 1fr 1fr;
+
+  .beyond__prose {
+    padding: 1.8rem 1.6rem;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .beyond__inner {
-    padding: 3rem 1rem 3rem;
+    padding: 3rem 1.5rem 3.5rem;
   }
+
   .beyond__masonry {
     grid-template-columns: repeat(2, 1fr);
   }
-  .beyond__pm-item {
-    aspect-ratio: 4 / 3;
+
+  .beyond__discs {
+    grid-template-columns: repeat(2, 1fr);
   }
-  .beyond__pm-item:nth-child(n) {
-    grid-row: auto;
-    grid-column: auto;
-    aspect-ratio: 4 / 3;
+
+  .beyond__disc {
+    padding: 0.55rem 0.75rem;
   }
-  .beyond__pm-item:nth-child(n) img {
-    min-height: auto;
-    height: 100%;
+
+  .beyond__disc span {
+    font-size: 0.6rem;
+    white-space: normal;
+    text-align: center;
   }
-  .beyond__bottom-row {
-    grid-template-columns: 1fr;
-  }
-  .beyond__pm-item--last {
-    min-height: 200px;
-  }
+
   .beyond__prose {
     padding: 1.5rem 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .beyond__inner {
+    padding: 2.5rem 1rem 3rem;
+  }
+
+  .beyond__discs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .beyond__disc {
+    padding: 0.5rem 0.5rem;
+  }
+
+  .beyond__disc span {
+    font-size: 0.55rem;
+    white-space: normal;
+    text-align: center;
   }
 }
 </style>

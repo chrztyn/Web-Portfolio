@@ -9,6 +9,10 @@
   animation: fadeUp 0.6s ease both;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -54,7 +58,7 @@
   }
 
    #skills {
-    margin-bottom: -3rem;
+    margin-bottom: -5rem;
   }
 
   #about {

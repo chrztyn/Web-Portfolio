@@ -369,6 +369,8 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top;
+  image-rendering: -webkit-optimize-contrast;
   transition: transform 0.5s ease, filter 0.4s ease;
 }
 
