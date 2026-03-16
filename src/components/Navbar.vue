@@ -277,7 +277,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 @media (min-width: 769px) {
   .site-header.scrolled {
     background: transparent;
-    padding-top: 1.2rem;
+    padding-top: 0.1rem;
   }
 
   .site-header.scrolled .nav {

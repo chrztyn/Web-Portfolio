@@ -65,10 +65,10 @@ useHead({
     { property: 'og:title', content: 'Christine Mae Yunun | Back End Developer' },
     { property: 'og:description', content: 'Backend-focused web developer skilled in building efficient, scalable, and maintainable applications.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: '' },
+    { property: 'og:url', content: 'https://christine-yunun.vercel.app/' },
   ],
   link: [
-    { rel: 'canonical', href: '' }
+    { rel: 'canonical', href: 'https://christine-yunun.vercel.app/' }
   ]
 })
 
@@ -152,11 +152,20 @@ html.dark {
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip; 
 }
 
-/* ── Cursor ── */
 body {
   cursor: none;
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: clip; 
+}
+
+#app {
+  overflow: visible;
 }
 
 #cur,
@@ -259,14 +268,12 @@ body.hovering #cur-ring {
 
 section {
   opacity: 0;
-  filter: blur(6px);
   transform: translateY(16px);
-  transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 section.in-view {
   opacity: 1;
-  filter: blur(0px);
   transform: translateY(0);
 }
 
@@ -299,13 +306,6 @@ section.in-view .cert__card,
 section.in-view .resume__entry {
   opacity: 1;
   transform: translateY(0);
-}
-
-body {
-  font-family: 'Syne', sans-serif;
-  background: var(--bg);
-  color: var(--ink);
-  transition: background 0.3s ease, color 0.3s ease;
 }
 
 section#home {
